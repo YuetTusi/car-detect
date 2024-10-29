@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import electron from 'electron';
+
 import { Component, ErrorInfo, ReactNode } from 'react';
 import SyncOutlined from '@ant-design/icons/SyncOutlined';
 import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
@@ -10,7 +9,7 @@ import { ErrorMessage } from './error-message';
 import { CrashViewBox } from './styled/box';
 import { CrashProp, CrashState } from './prop';
 
-const { ipcRenderer } = electron;
+const { ipcRenderer } = window.electron;
 
 /**
  * 崩溃页
@@ -20,10 +19,10 @@ class Crash extends Component<CrashProp, CrashState> {
         super(props);
         this.state = { hasError: false };
     }
-    static getDerivedStateFromError() {
+    static getDerivedStateFromError(): any {
         return { hasError: true };
     }
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
         // log.error(`Crash:${error.message},ErrorStack:${error.stack},errorInfo:${errorInfo.componentStack}`);
         this.setState({ err: error, errInfo: errorInfo });
     }
@@ -51,7 +50,7 @@ class Crash extends Component<CrashProp, CrashState> {
                         </>
                     }
                 />
-            </CrashViewBox>
+            </CrashViewBox>;
         } else {
             return <>{this.props.children}</>;
         }
