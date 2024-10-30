@@ -6,6 +6,7 @@ import {
     DesktopOutlined,
     SaveOutlined
 } from '@ant-design/icons';
+import { NavLink } from 'react-router-dom';
 import { Button, Form, Input } from 'antd';
 import { LayoutProp } from './prop';
 import { LayoutBox } from './styled/box';
@@ -23,18 +24,18 @@ const Layout: FC<LayoutProp> = ({ children }) => {
             </div>
             <div className="layout-fn">
                 <div className="fn-button-group">
-                    <button type="button" className="fn-button">
+                    {/* <NavLink to="/" className="fn-button">
                         <SettingOutlined />
                         <span>参数设置</span>
-                    </button>
-                    <button type="button" className="fn-button">
+                    </NavLink> */}
+                    <NavLink to="/" className="fn-button">
                         <DesktopOutlined />
                         <span>数据展示</span>
-                    </button>
-                    <button type="button" className="fn-button">
+                    </NavLink>
+                    <NavLink to="/log" className="fn-button">
                         <FileTextOutlined />
                         <span>日志记录</span>
-                    </button>
+                    </NavLink>
                 </div>
                 <div style={{ padding: '0 5px 5px 5px' }}>
                     <Panel title="参数设置">

@@ -25,6 +25,7 @@ export const LayoutBox = styled.div`
             align-items: center;
             justify-content: center;
             flex-direction: column;
+            color:#222;
             padding: 4px 4px;
             border: none;
             border-right: 1px solid #d29d49;
@@ -32,7 +33,7 @@ export const LayoutBox = styled.div`
             &:hover{
                 background-color: #dea346;
             }
-            &:active{
+            &.active{
                 background-color: #dea346;
             }
             &:last-child{

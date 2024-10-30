@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from '../components/layout';
 import { Dashboard } from '../view/dashboard';
+import { Log } from '../view/log';
 // import { Setting } from '../view/setting';
 
 
@@ -13,6 +14,9 @@ export const ViewRouter: FC<any> = () => <Router>
         <Route
             path="/"
             element={<Layout><Dashboard /></Layout>} />
+        <Route
+            path="/log"
+            element={<Layout><Log /></Layout>} />
         {/* <Route
             path="/dashboard"
             element={
