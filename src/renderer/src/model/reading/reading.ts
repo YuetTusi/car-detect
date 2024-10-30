@@ -1,7 +1,8 @@
-import { ReadingState } from './index';
+import { create } from 'zustand';
 import { GetState, SetState } from '..';
+import { ReadingState } from '.';
 
-const reading = (setState: SetState, _: GetState): ReadingState => ({
+const useReading = create<ReadingState>((setState: SetState, _: GetState) => ({
   /**
    * 读取中状态
    */
@@ -13,6 +14,6 @@ const reading = (setState: SetState, _: GetState): ReadingState => ({
   setReading(payload: boolean): void {
     setState({ reading: payload });
   },
-});
+}));
 
-export { reading };
+export { useReading };

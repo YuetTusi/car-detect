@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Table } from 'antd';
 import { DashboardProp } from './prop';
 import { Panel } from '@renderer/components/panel';
+// import { useReading } from '@renderer/model';
 
 const Dashboard: FC<DashboardProp> = () => {
 

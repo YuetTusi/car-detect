@@ -1,4 +1,4 @@
-import { reading } from './reading';
+import { useReading } from './reading';
 
 interface ReadingState {
   /**
@@ -13,4 +13,4 @@ interface ReadingState {
 }
 
 export type { ReadingState };
-export { reading };
+export { useReading };
