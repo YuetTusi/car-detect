@@ -80,6 +80,16 @@ export const LayoutBox = styled.div`
     &>.layout-right{
         flex:1;
         height: 100%;
+        position: relative;
+
+        .layout-content{
+            position: absolute;
+            top:60px;
+            left:0;
+            right:0;
+            bottom:0;
+            overflow-y: auto;
+        }
     }
 
     .layout-header{

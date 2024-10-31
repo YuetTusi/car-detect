@@ -18,6 +18,7 @@ export const GlobalStyle = createGlobalStyle`
         padding: 0;
         width: auto;
         height: 100%;
+        background-color: #f6f7f9;
     }
     #app{
         width:auto;
@@ -26,7 +27,6 @@ export const GlobalStyle = createGlobalStyle`
         font-size: 2rem;
         /* font-weight: 400; */
         font-family: "Microsoft YaHei","NSimSun","Arial";
-        background-color: #f6f7f9;
     }
 
     .fn-hidden{

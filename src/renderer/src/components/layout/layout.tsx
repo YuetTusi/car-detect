@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import {
     CarOutlined,
-    SettingOutlined,
     FileTextOutlined,
     DesktopOutlined,
     SaveOutlined
