@@ -19,12 +19,6 @@ dayjs.locale('zh-cn');
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
 
-// localforage.config({
-//     driver: [
-//         localforage.LOCALSTORAGE,
-//         localforage.INDEXEDDB
-//     ]
-// });
 
 const App = (): JSX.Element => <ConfigProvider
   theme={{

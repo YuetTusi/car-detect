@@ -1,7 +1,15 @@
 import { join } from 'path';
-import { app, shell, BrowserWindow, ipcMain } from 'electron';
+import {
+  app,
+  shell,
+  BrowserWindow,
+  ipcMain,
+  IpcMainInvokeEvent,
+} from 'electron';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
+import { getDb } from './db';
+import { bindDbHandle } from './db-handle';
 
 function createWindow(): void {
   // Create the browser window.
@@ -53,6 +61,8 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'));
+
+  bindDbHandle();
 
   createWindow();
 

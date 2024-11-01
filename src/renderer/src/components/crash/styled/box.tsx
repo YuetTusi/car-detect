@@ -9,6 +9,6 @@ export const CrashViewBox = styled.div`
     align-items: center;
 
     .ant-result-title{
-        color:#fff;
+        color:#222;
     }
 `;
