@@ -4,7 +4,6 @@ declare global {
   interface Window {
     electron: ElectronAPI;
     api: unknown;
-    test: any;
     [others: string]: any;
   }
 }

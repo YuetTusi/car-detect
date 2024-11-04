@@ -1,19 +1,14 @@
 import { join } from 'path';
-import {
-  app,
-  shell,
-  BrowserWindow,
-  ipcMain,
-  IpcMainInvokeEvent,
-} from 'electron';
+import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
-import { getDb } from './db';
 import { bindDbHandle } from './db-handle';
+
+let mainWindow: BrowserWindow | null = null;
 
 function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     minHeight: 600,
@@ -28,7 +23,7 @@ function createWindow(): void {
   });
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show();
+    mainWindow?.show();
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -61,6 +56,33 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'));
+
+  //退出应用
+  ipcMain.on('do-close', () => {
+    //mainWindow通知退出程序
+    if (process.platform !== 'darwin') {
+      if (mainWindow !== null) {
+        mainWindow.destroy();
+        mainWindow = null;
+      }
+      app.exit(0);
+    }
+  });
+
+  /**
+   * 重启应用
+   */
+  ipcMain.on('do-relaunch', () => {
+    app.relaunch();
+    //mainWindow通知退出程序
+    if (process.platform !== 'darwin') {
+      if (mainWindow !== null) {
+        mainWindow.destroy();
+        mainWindow = null;
+      }
+      app.exit(0);
+    }
+  });
 
   bindDbHandle();
 

@@ -38,13 +38,15 @@ const Dashboard: FC<DashboardProp> = () => {
         <div>
             <button type="button" onClick={async () => {
 
-                // const res = await request('http://localhost:3000/data', null);
+                const res = await request('http://localhost:3000/data', null);
+
+                console.log(res);
                 // const res = await request('/demo.json', null);
 
                 // const r = await ipcRenderer.invoke('update', ["test", { _id: 'T00mMGnkYKfBecNJ' }, { test: 'xyz' }]);
 
-                const r = await ipcRenderer.invoke('all', ['test']);
-                console.log(r);
+                // const r = await ipcRenderer.invoke('all', ['test']);
+                // console.log(r);
                 // db.insert(res[0]);
                 // setData(res[0]);
             }}>test</button>
