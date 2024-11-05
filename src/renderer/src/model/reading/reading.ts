@@ -1,8 +1,7 @@
 import { create } from 'zustand';
-import { GetState, SetState } from '..';
 import { ReadingState } from '.';
 
-const useReading = create<ReadingState>((setState: SetState, _: GetState) => ({
+const useReading = create<ReadingState>((setState) => ({
   /**
    * 读取中状态
    */

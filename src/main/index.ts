@@ -1,16 +1,21 @@
 import { join } from 'path';
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
+import log from 'electron-log/main';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { bindDbHandle } from './db-handle';
 
+const cwd = process.cwd();
+// 设置日志文件路径
+log.initialize();
+log.transports.file.resolvePathFn = (): string => join(cwd, 'logs/app.log');
 let mainWindow: BrowserWindow | null = null;
 
 function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1280,
+    height: 900,
     minHeight: 600,
     minWidth: 800,
     show: false,
@@ -24,6 +29,7 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show();
+    log.info('mainwindow is showing');
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {

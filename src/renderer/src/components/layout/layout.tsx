@@ -6,14 +6,17 @@ import {
     SaveOutlined
 } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
-import { Button, Form, Input } from 'antd';
-import { LayoutProp } from './prop';
+import { Col, Row, Button, Form, Input } from 'antd';
+import { SetForm } from './set-form';
+import { LayoutProp, SetFormValue } from './prop';
 import { LayoutBox } from './styled/box';
 import { Panel } from '../panel';
 
-const { Item } = Form;
+const { Item, useForm } = Form;
 
 const Layout: FC<LayoutProp> = ({ children }) => {
+
+    const [formRef] = useForm<SetFormValue>();
 
     return <LayoutBox>
         <div className="layout-left">
@@ -38,18 +41,7 @@ const Layout: FC<LayoutProp> = ({ children }) => {
                 </div>
                 <div style={{ padding: '0 5px 5px 5px' }}>
                     <Panel title="参数设置">
-                        <Form layout="vertical" style={{ margin: '10px' }}>
-                            <Item label="频点">
-                                <Input />
-                            </Item>
-                            <Item>
-                                <Button onClick={() => {
-                                }} type="primary">
-                                    <SaveOutlined />
-                                    <span>保存</span>
-                                </Button>
-                            </Item>
-                        </Form>
+                        <SetForm formRef={formRef} />
                     </Panel>
                 </div>
             </div>

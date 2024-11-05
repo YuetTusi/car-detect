@@ -11,5 +11,6 @@ export const PanelBox = styled.div`
     }
     .panel-content{
         padding: 0;
+        /* background-color: #fff; */
     }
 `;

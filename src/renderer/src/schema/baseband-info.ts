@@ -1,8 +1,8 @@
-interface NameValue {
-  name: string;
-  value: string;
-}
+import { NameValue } from './name-value';
 
+/**
+ * 设备信息
+ */
 export interface BasebandInfo {
   Band: NameValue;
   CELL: NameValue;
@@ -23,4 +23,5 @@ export interface BasebandInfo {
   Temperature: NameValue;
   Time: NameValue;
   UECount: NameValue;
+  [othersProperty: string]: any;
 }

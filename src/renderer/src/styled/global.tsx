@@ -35,6 +35,12 @@ export const GlobalStyle = createGlobalStyle`
     .fn-show{
         display: block;
     }
+    .fn-align-right{
+        text-align: right;
+    }
+    .fn-align-center{
+        text-align: center;
+    }
 
     //Webkit滚动条样式
     ::-webkit-scrollbar {
