@@ -1,6 +1,6 @@
 type HttpMethods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-const urlPrefix = 'http://127.0.0.1:8081/';
+const urlPrefix = 'http://127.0.0.1:8989';
 
 export interface HttpResult<T = Record<string, any>> {
   /**

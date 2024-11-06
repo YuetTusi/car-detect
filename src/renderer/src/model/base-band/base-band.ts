@@ -1,0 +1,39 @@
+import log from 'electron-log/renderer';
+import { create } from 'zustand';
+import { BaseBandState } from './index';
+import { request } from '@renderer/util/http';
+import { BasebandInfo } from '@renderer/schema/baseband-info';
+
+const useBaseBand = create<BaseBandState>((setState) => ({
+  /**
+   * 设备数据
+   */
+  baseBandData: [],
+  /**
+   * 更新设备数据
+   * @param payload 设备数据
+   */
+  setBaseBandData(payload: BasebandInfo[]): void {
+    setState({ baseBandData: payload });
+  },
+  /**
+   * 查询设备数据
+   * @returns
+   */
+  async queryBaseBandData(): Promise<void> {
+    try {
+      const res = await request('http://localhost:8080/demo', null);
+      if (res.success) {
+        setState({ baseBandData: res.data });
+      } else {
+        setState({ baseBandData: [] });
+      }
+    } catch (error) {
+      log.error(
+        `查询设备数据失败 @model>base-band>queryBaseBandData():${error.message}`,
+      );
+    }
+  },
+}));
+
+export { useBaseBand };

@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import log from 'electron-log/main';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
@@ -6,6 +7,7 @@ import icon from '../../resources/icon.png?asset';
 import { bindDbHandle } from './db-handle';
 
 const cwd = process.cwd();
+let serviceHandle: ChildProcessWithoutNullStreams | null = null;
 // 设置日志文件路径
 log.initialize();
 log.transports.file.resolvePathFn = (): string => join(cwd, 'logs/app.log');
@@ -14,6 +16,7 @@ let mainWindow: BrowserWindow | null = null;
 function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    title: '车检管理系统',
     width: 1280,
     height: 900,
     minHeight: 600,
@@ -27,10 +30,7 @@ function createWindow(): void {
     },
   });
 
-  mainWindow.on('ready-to-show', () => {
-    mainWindow?.show();
-    log.info('mainwindow is showing');
-  });
+  mainWindow.on('ready-to-show', () => mainWindow?.show());
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
@@ -50,6 +50,15 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  serviceHandle = spawn('demo.exe', [], {
+    cwd: undefined,
+    windowsHide: true,
+  });
+  serviceHandle.on('error', (error) => {
+    log.error(`服务出错: ${error.message}`);
+    serviceHandle?.kill();
+  });
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron');
 
@@ -60,9 +69,6 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'));
-
   //退出应用
   ipcMain.on('do-close', () => {
     //mainWindow通知退出程序
@@ -70,6 +76,10 @@ app.whenReady().then(() => {
       if (mainWindow !== null) {
         mainWindow.destroy();
         mainWindow = null;
+      }
+      if (serviceHandle !== null) {
+        serviceHandle.kill();
+        serviceHandle = null;
       }
       app.exit(0);
     }
@@ -85,6 +95,10 @@ app.whenReady().then(() => {
       if (mainWindow !== null) {
         mainWindow.destroy();
         mainWindow = null;
+      }
+      if (serviceHandle !== null) {
+        serviceHandle.kill();
+        serviceHandle = null;
       }
       app.exit(0);
     }
@@ -106,6 +120,10 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    if (serviceHandle !== null) {
+      serviceHandle.kill();
+      serviceHandle = null;
+    }
     app.quit();
   }
 });

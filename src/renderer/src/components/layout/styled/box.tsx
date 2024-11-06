@@ -13,20 +13,21 @@ export const LayoutBox = styled.div`
     flex-direction: row;
 
     .fn-button-group{
+        width: 300px;
         border:1px solid #d29d49;
         border-radius: 3px;
         display: flex;
         flex-direction: row;
-        margin: 5px;
+        margin-left: 5px;
         &>.fn-button{
             cursor: pointer;
             flex:1;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
+            flex-direction: row;
             color:#222;
-            padding: 4px 4px;
+            padding: 10px 4px;
             border: none;
             border-right: 1px solid #d29d49;
             background-color: #fdc46a;
@@ -41,16 +42,17 @@ export const LayoutBox = styled.div`
             }
             &>.anticon{
                 font-size: 2rem;
+                margin-right: 4px;
             }
-            &>span{
+            /* &>span{
                 padding-top: 8px;
-            }
+            } */
         }
     }
 
     &>.layout-left{
         flex:none;
-        width: 300px;
+        width: 340px;
         height: 100%;
         position: relative;
         /* border-right: 1px solid #d6d8e1; */
@@ -75,6 +77,7 @@ export const LayoutBox = styled.div`
             bottom:0;
             right:0;
             border-right: 1px solid #d6d8e1;
+            overflow-y: auto;
         }
     }
     &>.layout-right{
@@ -95,5 +98,9 @@ export const LayoutBox = styled.div`
     .layout-header{
         height: 60px;
         background-color: #336caf;
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
     }
 `;

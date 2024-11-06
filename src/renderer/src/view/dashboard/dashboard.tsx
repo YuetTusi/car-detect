@@ -6,7 +6,7 @@ import { request } from '@renderer/util/http';
 // import { polling } from '@renderer/util/polling';
 import { Category, ResultTableBox } from './styled/box';
 import { BasebandInfo } from '@renderer/schema/baseband-info';
-import { useRf } from '@renderer/model';
+import { useReading, useRf } from '@renderer/model';
 import { RFData } from '@renderer/schema/rf-data';
 import { helper } from '@renderer/util/helper';
 // import { useReading } from '@renderer/model';
@@ -16,7 +16,6 @@ const { ipcRenderer } = window.electron;
 
 const Dashboard: FC<DashboardProp> = () => {
 
-    const [data, setData] = useState<any>();
     const { rfData, queryRfData } = useRf();
 
     const renderRfTable = (data: RFData[]): JSX.Element[] => {
@@ -50,20 +49,21 @@ const Dashboard: FC<DashboardProp> = () => {
     return <div style={{ margin: '5px' }}>
         <div>
             <button type="button" onClick={async () => {
+                const res = await request('/api/v1/enable4GRF', {
+                    "cmDlarfcn": "38950",
+                    "cmUlarfcn": "38950",
+                    "cmPci": "501",
+                    "cmCellId": "111111",
+                    "cmTac": "11111",
+                    "cuDlarfcn": "1650",
+                    "cuUlarfcn": "19650",
+                    "cuPci": "500",
+                    "cuCellId": "222222",
+                    "cuTac": "22222"
+                }, 'POST');
 
-                queryRfData();
-
-                // const res = await request('http://localhost:3000/data', null);
-
-                // console.log(res);
-                // const res = await request('/demo.json', null);
-
-                // const r = await ipcRenderer.invoke('update', ["test", { _id: 'T00mMGnkYKfBecNJ' }, { test: 'xyz' }]);
-
-                // const r = await ipcRenderer.invoke('all', ['test']);
-                // console.log(r);
-                // db.insert(res[0]);
-                // setData(res[0]);
+                console.clear();
+                console.log(res);
             }}>test</button>
         </div>
         <Panel title="结果">

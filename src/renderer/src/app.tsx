@@ -1,3 +1,4 @@
+import log from 'electron-log/renderer';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -14,11 +15,27 @@ import {
 import zhCN from 'antd/es/locale/zh_CN';
 import { blue } from './theme/blue';
 import { GlobalStyle } from './styled/global';
+import { request } from './util/http';
+import { defaultSetting } from '@renderer/util/helper';
 
 dayjs.locale('zh-cn');
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
 
+//界面启动，开启射频
+(async (): Promise<void> => {
+  console.clear();
+  try {
+    const res = await request('/api/v1/enable4GRF', defaultSetting, 'POST');
+    if (res.success) {
+      console.log(res.data);
+    } else {
+      console.log(res.error_message);
+    }
+  } catch (error) {
+    log.error(`启动失败 ${error.message}`);
+  }
+})();
 
 const App = (): JSX.Element => <ConfigProvider
   theme={{

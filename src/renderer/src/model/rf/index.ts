@@ -15,7 +15,7 @@ interface RfState {
    * 查询侦码数据
    * @returns
    */
-  queryRfData: () => void;
+  queryRfData: () => Promise<void>;
 }
 
 export type { RfState };

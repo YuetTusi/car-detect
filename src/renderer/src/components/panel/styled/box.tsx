@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const PanelBox = styled.div`
+    margin-top: 5px;
     border:1px solid #336caf;
     border-radius: 3px;
     .panel-title{
