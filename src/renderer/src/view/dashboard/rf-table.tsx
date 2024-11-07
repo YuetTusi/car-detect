@@ -1,22 +1,22 @@
 import { FC } from 'react';
 import { Table } from 'antd';
-import { useBaseBand } from '@renderer/model';
-import { getBandColumns } from './column';
-import { BandTableProp } from './prop';
 import { helper } from '@renderer/util/helper';
+import { useRfCapture } from '@renderer/model';
+import { getRfColumns } from './column';
+import { RfTableProp } from './prop';
 
 /**
- * 设备数据 
+ * 侦码数据 
  */
-const BandTable: FC<BandTableProp> = () => {
+const RfTable: FC<RfTableProp> = () => {
 
-    const { baseBandData } = useBaseBand();
-    const columns = getBandColumns(baseBandData);
+    const { rfCaptureData } = useRfCapture();
+    const columns = getRfColumns(rfCaptureData);
 
     const renderData = (): any[] => {
         const fields: string[] = columns.map(col => col.dataIndex);//取所有的列名
 
-        return baseBandData.map(item => {
+        return rfCaptureData.map(item => {
             let row: Record<string, any> = {};
             for (let i = 0; i < fields.length; i++) {
                 row = {
@@ -38,4 +38,4 @@ const BandTable: FC<BandTableProp> = () => {
     />;
 };
 
-export { BandTable };
+export { RfTable };
