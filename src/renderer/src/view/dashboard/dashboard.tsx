@@ -1,12 +1,11 @@
 
 import { FC } from 'react';
-import { DashboardProp } from './prop';
 import { Panel } from '@renderer/components/panel';
 import { useBaseBand, useRfCapture } from '@renderer/model';
 import { BandTable } from './band-table';
 import { RfTable } from './rf-table';
 import { Category } from './styled/box';
-
+import { DashboardProp } from './prop';
 // const { ipcRenderer } = window.electron;
 
 

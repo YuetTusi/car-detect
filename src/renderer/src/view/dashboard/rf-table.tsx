@@ -1,17 +1,44 @@
 import { FC } from 'react';
-import { Table } from 'antd';
+import { App, Table } from 'antd';
 import { helper } from '@renderer/util/helper';
 import { useRfCapture } from '@renderer/model';
 import { getRfColumns } from './column';
-import { RfTableProp } from './prop';
+import { ActionType, RfTableProp } from './prop';
+import { request } from '@renderer/util/http';
 
 /**
  * 侦码数据 
  */
 const RfTable: FC<RfTableProp> = () => {
 
+    const { modal, message } = App.useApp();
     const { rfCaptureData } = useRfCapture();
-    const columns = getRfColumns(rfCaptureData);
+    const columns = getRfColumns(rfCaptureData, (actionType, record) => {
+        const type = actionType === ActionType.WhiteList ? '白名单' : '黑名单';
+        modal.confirm({
+            async onOk() {
+                const { IMSI } = record;
+                const params = actionType === ActionType.WhiteList
+                    ? { whiteList: IMSI } : { blackList: IMSI };
+                message.destroy();
+                try {
+                    const { success, error_message } = await request('/api/v1/set4GBlackWhiteList', params, 'POST');
+                    if (success) {
+                        message.success(`${type}添加成功`);
+                    } else {
+                        message.warning(`${type}添加失败 ${error_message}`);
+                    }
+                } catch (error) {
+                    console.log(error);
+                    message.warning(`操作失败 ${error.message}`);
+                }
+            },
+            title: type,
+            content: `确认将 IMSI:${record.IMSI} 加入${type}？`,
+            okText: '是',
+            cancelText: '否'
+        });
+    });
 
     const renderData = (): any[] => {
         const fields: string[] = columns.map(col => col.dataIndex);//取所有的列名
@@ -34,7 +61,7 @@ const RfTable: FC<RfTableProp> = () => {
         rowKey={() => helper.nextId()}
         bordered={true}
         pagination={false}
-    // scroll={{ x: 800 }}
+    // scroll={{ y: 800 }}
     />;
 };
 

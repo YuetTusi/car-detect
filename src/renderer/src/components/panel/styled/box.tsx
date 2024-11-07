@@ -12,6 +12,7 @@ export const PanelBox = styled.div`
     }
     .panel-content{
         padding: 0;
+        overflow-x: auto;
         /* background-color: #fff; */
     }
 `;
