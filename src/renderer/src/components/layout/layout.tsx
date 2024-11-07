@@ -8,17 +8,17 @@ import {
 import { NavLink } from 'react-router-dom';
 import { Col, Row, Button, Form, Tabs } from 'antd';
 import { Cm4gForm } from './cm4g-form';
-import { LayoutProp, Cm4gFormValue, Cu4gFormValue } from './prop';
+import { LayoutProp, Set4gFormValue } from './prop';
 import { LayoutBox } from './styled/box';
 import { Panel } from '../panel';
 import { Cu4gForm } from './cu4g-form';
+import { Set4gForm } from './set4g-form';
 
 const { Item, useForm } = Form;
 
 const Layout: FC<LayoutProp> = ({ children }) => {
 
-    const [cm4gFormRef] = useForm<Cm4gFormValue>();
-    const [cu4gFormRef] = useForm<Cu4gFormValue>();
+    const [set4gFormRef] = useForm<Set4gFormValue>();
 
     return <LayoutBox>
         <div className="layout-left">
@@ -34,25 +34,7 @@ const Layout: FC<LayoutProp> = ({ children }) => {
                                 {
                                     key: '4g',
                                     label: '4G',
-                                    children: <Cm4gForm formRef={cm4gFormRef} />
-                                },
-                                {
-                                    key: '2g',
-                                    label: '2G',
-                                    children: null
-                                }
-                            ]}
-                            type="card"
-                            size="small">
-                        </Tabs>
-                    </Panel>
-                    <Panel title="联通设置">
-                        <Tabs
-                            items={[
-                                {
-                                    key: '4g',
-                                    label: '4G',
-                                    children: <Cu4gForm formRef={cu4gFormRef} />
+                                    children: <Set4gForm formRef={set4gFormRef} />
                                 },
                                 {
                                     key: '2g',

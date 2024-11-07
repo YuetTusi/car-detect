@@ -27,7 +27,7 @@ const useBaseBand = create<BaseBandState>((setState) => ({
         '/api/v1/get4GBasebandInfo',
         null,
       );
-      console.log(data);
+
       if (!success) {
         setState({ baseBandData: [] });
         return false;

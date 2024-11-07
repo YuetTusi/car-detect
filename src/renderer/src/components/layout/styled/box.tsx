@@ -104,3 +104,26 @@ export const LayoutBox = styled.div`
         align-items: center;
     }
 `;
+
+export const Sort = styled.div`
+
+    &>fieldset{
+        margin:0;
+        padding:0;
+        width: 100%;
+        border:1px solid #336caf;
+        border-radius: 2px;
+        &>legend{
+            display: inline-block;
+            width: auto;
+            font-size: 1.4rem;
+            padding:0 1rem;
+            margin-left: 1rem;
+            color:#336caf;
+            border: 0;
+        }
+        &>.form-box{
+            padding: 0 14px;
+        }
+    }
+`;

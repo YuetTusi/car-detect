@@ -50,14 +50,14 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  serviceHandle = spawn('E:\\release\\X-PrecisionLocator.exe', [], {
-    cwd: undefined,
-    windowsHide: false,
-  });
-  serviceHandle.on('error', (error) => {
-    log.error(`服务出错: ${error.message}`);
-    serviceHandle?.kill();
-  });
+  // serviceHandle = spawn('E:\\release\\X-PrecisionLocator.exe', [], {
+  //   cwd: undefined,
+  //   windowsHide: false,
+  // });
+  // serviceHandle.on('error', (error) => {
+  //   log.error(`服务出错: ${error.message}`);
+  //   serviceHandle?.kill();
+  // });
 
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron');
