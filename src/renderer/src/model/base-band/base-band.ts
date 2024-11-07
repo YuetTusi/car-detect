@@ -1,4 +1,5 @@
 import log from 'electron-log/renderer';
+import union from 'lodash/union';
 import { create } from 'zustand';
 import { BaseBandState } from './index';
 import { request } from '@renderer/util/http';
@@ -20,18 +21,24 @@ const useBaseBand = create<BaseBandState>((setState) => ({
    * 查询设备数据
    * @returns
    */
-  async queryBaseBandData(): Promise<void> {
+  async queryBaseBandData(): Promise<boolean> {
     try {
-      const res = await request('http://localhost:8080/demo', null);
-      if (res.success) {
-        setState({ baseBandData: res.data });
-      } else {
+      const { success, data } = await request<BasebandInfo[]>(
+        '/api/v1/get4GBasebandInfo',
+        null,
+      );
+      console.log(data);
+      if (!success) {
         setState({ baseBandData: [] });
+        return false;
       }
+      setState({ baseBandData: data ?? [] });
+      return true;
     } catch (error) {
       log.error(
         `查询设备数据失败 @model>base-band>queryBaseBandData():${error.message}`,
       );
+      return false;
     }
   },
 }));

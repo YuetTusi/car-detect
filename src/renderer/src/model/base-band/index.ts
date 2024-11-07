@@ -15,7 +15,7 @@ interface BaseBandState {
    * 查询设备数据
    * @returns
    */
-  queryBaseBandData: () => Promise<void>;
+  queryBaseBandData: () => Promise<boolean>;
 }
 
 export type { BaseBandState };

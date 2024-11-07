@@ -1,0 +1,43 @@
+import { FC, useEffect } from 'react';
+import { Table } from 'antd';
+import { useBaseBand } from '@renderer/model';
+import { getBandColumns } from './column';
+import { BandTableProp } from './prop';
+import { helper } from '@renderer/util/helper';
+
+/**
+ * 设备数据 
+ */
+const BandTable: FC<BandTableProp> = () => {
+
+    const { baseBandData } = useBaseBand();
+    const columns = getBandColumns(baseBandData);
+
+    const renderData = (): any[] => {
+        const fields: string[] = columns.map(col => col.dataIndex);//取所有的列名
+
+        return baseBandData.map(item => {
+            let row: Record<string, any> = {};
+            for (let i = 0; i < fields.length; i++) {
+                row = {
+                    ...row,
+                    [fields[i]]: item[fields[i]]?.value ?? ''//用每一个列名去找每行对应的字段.value值
+                };
+            }
+            return row;
+        });
+    };
+
+    console.log(columns);
+
+    return <Table
+        columns={columns}
+        dataSource={renderData()}
+        rowKey={() => helper.nextId()}
+        bordered={true}
+        pagination={false}
+    // scroll={{ x: 800 }}
+    />;
+};
+
+export { BandTable };

@@ -50,9 +50,9 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  serviceHandle = spawn('demo.exe', [], {
+  serviceHandle = spawn('E:\\release\\X-PrecisionLocator.exe', [], {
     cwd: undefined,
-    windowsHide: true,
+    windowsHide: false,
   });
   serviceHandle.on('error', (error) => {
     log.error(`服务出错: ${error.message}`);
