@@ -2,9 +2,13 @@ import { FC } from 'react';
 import { App, Table } from 'antd';
 import { helper } from '@renderer/util/helper';
 import { useRfCapture } from '@renderer/model';
+import { request } from '@renderer/util/http';
 import { getRfColumns } from './column';
 import { ActionType, RfTableProp } from './prop';
-import { request } from '@renderer/util/http';
+
+//黑白名单缓存
+const whiteListSet = new Set<string>();
+const blackListSet = new Set<string>();
 
 /**
  * 侦码数据 
@@ -19,12 +23,18 @@ const RfTable: FC<RfTableProp> = () => {
             async onOk() {
                 const { IMSI } = record;
                 const params = actionType === ActionType.WhiteList
-                    ? { whiteList: IMSI } : { blackList: IMSI };
+                    ? { whiteList: Array.from(whiteListSet).concat(IMSI).join(',') }
+                    : { blackList: Array.from(blackListSet).concat(IMSI).join(',') };
                 message.destroy();
                 try {
                     const { success, error_message } = await request('/api/v1/set4GBlackWhiteList', params, 'POST');
                     if (success) {
                         message.success(`${type}添加成功`);
+                        if (actionType === ActionType.WhiteList) {
+                            whiteListSet.add(IMSI);
+                        } else {
+                            blackListSet.add(IMSI);
+                        }
                     } else {
                         message.warning(`${type}添加失败 ${error_message}`);
                     }
@@ -33,6 +43,7 @@ const RfTable: FC<RfTableProp> = () => {
                     message.warning(`操作失败 ${error.message}`);
                 }
             },
+            centered: true,
             title: type,
             content: `确认将 IMSI:${record.IMSI} 加入${type}？`,
             okText: '是',

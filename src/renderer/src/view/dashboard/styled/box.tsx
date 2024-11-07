@@ -29,7 +29,7 @@ export const Category = styled.div`
     display: flex;
     flex-direction: row;
     padding: 14px;
-    gap: 14px;
+    /* margin-top: 14px; */
 
     &>fieldset{
         margin:0;

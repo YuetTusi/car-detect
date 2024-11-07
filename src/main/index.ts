@@ -44,6 +44,7 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
+  mainWindow.maximize();
 }
 
 // This method will be called when Electron has finished
