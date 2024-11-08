@@ -4,7 +4,7 @@ import { LogProp } from './prop';
 
 const Log: FC<LogProp> = () => {
 
-    return <div>Log</div>;
+    return <div></div>;
 };
 
 export { Log };

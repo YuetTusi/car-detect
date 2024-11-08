@@ -10,7 +10,8 @@ import {
   App as AntdApp,
   ConfigProvider,
   Empty,
-  theme
+  theme,
+  message
 } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import { blue } from './theme/blue';
@@ -28,10 +29,11 @@ dayjs.extend(customParseFormat);
   try {
     const res = await request('/api/v1/enable4GRF', defaultSetting, 'POST');
     if (res.success) {
-      console.log(res.data);
+      message.success('已开启射频');
     } else {
-      console.log(res.error_message);
+      message.warning('开启射频失败');
     }
+    console.log(res);
   } catch (error) {
     log.error(`启动失败 ${error.message}`);
   }

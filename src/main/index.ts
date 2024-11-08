@@ -12,6 +12,7 @@ let serviceHandle: ChildProcessWithoutNullStreams | null = null;
 log.initialize();
 log.transports.file.resolvePathFn = (): string => join(cwd, 'logs/app.log');
 let mainWindow: BrowserWindow | null = null;
+let timer: any = null;
 
 function createWindow(): void {
   // Create the browser window.
@@ -30,7 +31,20 @@ function createWindow(): void {
     },
   });
 
-  mainWindow.on('ready-to-show', () => mainWindow?.show());
+  mainWindow.on('ready-to-show', () => {
+    serviceHandle = spawn('E:\\release\\X-PrecisionLocator.exe', [], {
+      cwd: undefined,
+      windowsHide: false,
+    });
+    serviceHandle.on('error', (error) => {
+      log.error(`服务出错: ${error.message}`);
+      serviceHandle?.kill();
+      if (mainWindow !== null) {
+        mainWindow.webContents.send('start-service', false);
+      }
+    });
+    mainWindow?.show();
+  });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
@@ -51,15 +65,6 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  // serviceHandle = spawn('E:\\release\\X-PrecisionLocator.exe', [], {
-  //   cwd: undefined,
-  //   windowsHide: false,
-  // });
-  // serviceHandle.on('error', (error) => {
-  //   log.error(`服务出错: ${error.message}`);
-  //   serviceHandle?.kill();
-  // });
-
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron');
 
@@ -82,6 +87,7 @@ app.whenReady().then(() => {
         serviceHandle.kill();
         serviceHandle = null;
       }
+      clearInterval(timer);
       app.exit(0);
     }
   });
@@ -109,6 +115,15 @@ app.whenReady().then(() => {
 
   createWindow();
 
+  timer = setInterval(() => {
+    const date = new Date();
+    if (mainWindow !== null) {
+      if (date.getSeconds() % 6 === 0) {
+        mainWindow.webContents.send('polling');
+      }
+    }
+  }, 1000);
+
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -125,6 +140,7 @@ app.on('window-all-closed', () => {
       serviceHandle.kill();
       serviceHandle = null;
     }
+    clearInterval(timer);
     app.quit();
   }
 });

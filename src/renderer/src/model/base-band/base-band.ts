@@ -1,5 +1,4 @@
 import log from 'electron-log/renderer';
-import union from 'lodash/union';
 import { create } from 'zustand';
 import { BaseBandState } from './index';
 import { request } from '@renderer/util/http';

@@ -2,23 +2,45 @@ import { FC } from 'react';
 import {
     CarOutlined,
     FileTextOutlined,
-    DesktopOutlined,
-    SaveOutlined
+    DesktopOutlined
 } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
-import { Col, Row, Button, Form, Tabs } from 'antd';
-import { Cm4gForm } from './cm4g-form';
-import { LayoutProp, Set4gFormValue } from './prop';
-import { LayoutBox } from './styled/box';
-import { Panel } from '../panel';
-import { Cu4gForm } from './cu4g-form';
+import { App, Form, Tabs } from 'antd';
 import { Set4gForm } from './set4g-form';
+import { useSubscribe } from '@renderer/hook';
+import { useBaseBand, useLocation4g, useRfCapture } from '@renderer/model';
+import { Panel } from '../panel';
+import { LayoutBox } from './styled/box';
+import { LayoutProp, Set4gFormValue } from './prop';
 
-const { Item, useForm } = Form;
+const { useForm } = Form;
 
 const Layout: FC<LayoutProp> = ({ children }) => {
 
+    const { modal } = App.useApp();
     const [set4gFormRef] = useForm<Set4gFormValue>();
+    const { queryBaseBandData } = useBaseBand();
+    const { queryRfCaptureData } = useRfCapture();
+    const { queryLocation4gData } = useLocation4g();
+
+    useSubscribe('polling', () => {
+        Promise.all([
+            queryBaseBandData(),
+            queryRfCaptureData(),
+            queryLocation4gData()
+        ]);
+    });
+
+    useSubscribe('start-service', (_, success) => {
+        if (!success) {
+            modal.warning({
+                title: '警告',
+                content: '服务启动失败',
+                centered: true,
+                okText: '确定'
+            });
+        }
+    });
 
     return <LayoutBox>
         <div className="layout-left">
@@ -65,6 +87,11 @@ const Layout: FC<LayoutProp> = ({ children }) => {
                         <span>日志记录</span>
                     </NavLink>
                 </div>
+                <button type="button" onClick={async () => {
+                    queryBaseBandData();
+                    queryRfCaptureData();
+                    queryLocation4gData();
+                }}>test</button>
             </div>
             <div className="layout-content">
                 {children}

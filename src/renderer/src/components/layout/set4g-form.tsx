@@ -113,7 +113,7 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
                                 if (res.success) {
                                     message.success('设置成功');
                                 } else {
-                                    message.success(`设置失败 ${res.error_message}`);
+                                    message.warning(`设置失败 ${res.error_message}`);
                                 }
                             } catch (error) {
                                 console.log(error);

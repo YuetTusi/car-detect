@@ -22,12 +22,18 @@ const Cm4gForm: FC<Cm4gFormProp> = ({ formRef }) => {
         <Row gutter={12}>
             <Col span={12}>
                 <Item label="Cell ID" name="cmCellId" >
-                    <InputNumber min={0} max={268435455} style={{ width: '100%' }} />
+                    <InputNumber
+                        placeholder="0 ~ 268435455"
+                        min={0}
+                        max={268435455}
+                        style={{ width: '100%' }} />
                 </Item>
             </Col>
             <Col span={12}>
                 <Item label="TAC" name="cmTac">
-                    <InputNumber min={0} max={65535} style={{ width: '100%' }} />
+                    <InputNumber
+                        placeholder="0 ~ 65535"
+                        min={0} max={65535} style={{ width: '100%' }} />
                 </Item>
             </Col>
         </Row>
@@ -63,7 +69,7 @@ const Cm4gForm: FC<Cm4gFormProp> = ({ formRef }) => {
                                 if (res.success) {
                                     message.success('设置成功');
                                 } else {
-                                    message.success(`设置失败 ${res.error_message}`);
+                                    message.warning(`设置失败 ${res.error_message}`);
                                 }
                             } catch (error) {
                                 console.log(error);
