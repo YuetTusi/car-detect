@@ -1,7 +1,7 @@
 /**
- * 默认设置参数
+ * 默认4G设置参数
  */
-export const defaultSetting = {
+export const default4gSetting = {
   cmDlarfcn: '38950',
   cmUlarfcn: '38950',
   cmPci: '501',
@@ -12,6 +12,15 @@ export const defaultSetting = {
   cuPci: '500',
   cuCellId: '222222',
   cuTac: '22222',
+};
+
+/**
+ * 默认2G设置参数
+ */
+export const default2gSetting = {
+  cmArfcn: '53',
+  cuArfcn: '125',
+  blackList: '460021045638918,460046670506574,460077014840293,460085352403980',
 };
 
 export const helper = {

@@ -7,12 +7,8 @@ export interface Set4gFormProp extends PropsWithChildren {
   formRef: FormInstance<Set4gFormValue>;
 }
 
-export interface Cm4gFormProp extends PropsWithChildren {
-  formRef: FormInstance<Cm4gFormValue>;
-}
-
-export interface Cu4gFormProp extends PropsWithChildren {
-  formRef: FormInstance<Cu4gFormValue>;
+export interface Set2gFormProp extends PropsWithChildren {
+  formRef: FormInstance<Set2gFormValue>;
 }
 
 export interface Set4gFormValue {
@@ -58,10 +54,7 @@ export interface Set4gFormValue {
   cuTac: number;
 }
 
-/**
- * 移动表单
- */
-export interface Cm4gFormValue {
+export interface Set2gFormValue {
   /**
    * 下行频点
    */
@@ -82,12 +75,6 @@ export interface Cm4gFormValue {
    * TAC
    */
   cmTac: number;
-}
-
-/**
- * 联通表单
- */
-export interface Cu4gFormValue {
   /**
    * 下行频点
    */

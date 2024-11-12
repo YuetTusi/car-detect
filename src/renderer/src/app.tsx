@@ -17,7 +17,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import { blue } from './theme/blue';
 import { GlobalStyle } from './styled/global';
 import { request } from './util/http';
-import { defaultSetting } from '@renderer/util/helper';
+import { default4gSetting, default2gSetting } from '@renderer/util/helper';
 
 dayjs.locale('zh-cn');
 dayjs.extend(relativeTime);
@@ -27,13 +27,16 @@ dayjs.extend(customParseFormat);
 (async (): Promise<void> => {
   console.clear();
   try {
-    const res = await request('/api/v1/enable4GRF', defaultSetting, 'POST');
-    if (res.success) {
+    const [res4g, res2g] = await Promise.all([
+      request('/api/v1/enable4GRF', default4gSetting, 'POST'),
+      request('/api/v1/enable2GRF', default2gSetting, 'POST')
+    ]);
+
+    if (res4g.success && res2g.success) {
       message.success('已开启射频');
     } else {
       message.warning('开启射频失败');
     }
-    console.log(res);
   } catch (error) {
     log.error(`启动失败 ${error.message}`);
   }

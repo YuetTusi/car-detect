@@ -4,24 +4,24 @@ import {
     CheckCircleOutlined, LoadingOutlined
 } from '@ant-design/icons';
 import { App, Col, Row, Button, Form, InputNumber } from 'antd';
-import { Set4gFormProp } from './prop';
 import { request } from '@renderer/util/http';
+// import { useBaseBand, useLocation4g, useRfCapture } from '@renderer/model';
 import { Sort } from './styled/box';
-import { useBaseBand, useLocation4g, useRfCapture } from '@renderer/model';
+import { Set2gFormProp } from './prop';
 
 const { Item } = Form;
 
 /**
- * 移动联通4G表单
+ * 移动联通2G表单
  */
-const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
+const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
 
     const { message } = App.useApp();
     const [loading, setLoading] = useState<boolean>(false);
-    const { clearBlackList, clearWhiteList } = useRfCapture();
-    const { setBaseBandData } = useBaseBand();
-    const { setRfCaptureData } = useRfCapture();
-    const { setLocation4gData } = useLocation4g();
+    // const { clearBlackList, clearWhiteList } = useRfCapture();
+    // const { setBaseBandData } = useBaseBand();
+    // const { setRfCaptureData } = useRfCapture();
+    // const { setLocation4gData } = useLocation4g();
 
     return <Form
         form={formRef}
@@ -29,7 +29,7 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
         <Sort>
             <fieldset>
                 <legend>
-                    移动4G
+                    移动2G
                 </legend>
                 <div className="form-box">
                     <Row gutter={12}>
@@ -67,7 +67,7 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
             </fieldset>
             <fieldset style={{ marginTop: '14px' }}>
                 <legend>
-                    联通4G
+                    联通2G
                 </legend>
                 <div className="form-box">
                     <Row gutter={12}>
@@ -113,14 +113,14 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
                             const values = formRef.getFieldsValue();
                             try {
                                 setLoading(true);
-                                const res = await request('/api/v1/enable4GRF',
+                                const res = await request('/api/v1/enable2GRF',
                                     mapValues(values, value => typeof value === 'number' ? String(value) : value), 'POST');
                                 if (res.success) {
-                                    clearBlackList();
-                                    clearWhiteList();
-                                    setBaseBandData([]);
-                                    setLocation4gData([]);
-                                    setRfCaptureData([]);
+                                    // clearBlackList();
+                                    // clearWhiteList();
+                                    // setBaseBandData([]);
+                                    // setLocation4gData([]);
+                                    // setRfCaptureData([]);
                                     message.success('设置成功');
                                 } else {
                                     message.warning(`设置失败 ${res.error_message}`);
@@ -143,4 +143,4 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
     </Form>;
 };
 
-export { Set4gForm };
+export { Set2gForm };

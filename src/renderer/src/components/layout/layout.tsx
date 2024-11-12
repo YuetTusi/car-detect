@@ -7,11 +7,12 @@ import {
 import { NavLink } from 'react-router-dom';
 import { App, Form, Tabs } from 'antd';
 import { Set4gForm } from './set4g-form';
+import { Set2gForm } from './set2g-form';
 import { useSubscribe } from '@renderer/hook';
 import { useBaseBand, useLocation4g, useRfCapture } from '@renderer/model';
 import { Panel } from '../panel';
 import { LayoutBox } from './styled/box';
-import { LayoutProp, Set4gFormValue } from './prop';
+import { LayoutProp, Set2gFormValue, Set4gFormValue } from './prop';
 
 const { useForm } = Form;
 
@@ -19,6 +20,7 @@ const Layout: FC<LayoutProp> = ({ children }) => {
 
     const { modal } = App.useApp();
     const [set4gFormRef] = useForm<Set4gFormValue>();
+    const [set2gFormRef] = useForm<Set2gFormValue>();
     const { queryBaseBandData } = useBaseBand();
     const { queryRfCaptureData } = useRfCapture();
     const { queryLocation4gData } = useLocation4g();
@@ -61,7 +63,7 @@ const Layout: FC<LayoutProp> = ({ children }) => {
                                 {
                                     key: '2g',
                                     label: '2G',
-                                    children: null
+                                    children: <Set2gForm formRef={set2gFormRef} />
                                 }
                             ]}
                             type="card"

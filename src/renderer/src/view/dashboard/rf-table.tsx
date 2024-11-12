@@ -6,9 +6,9 @@ import { request } from '@renderer/util/http';
 import { getRfColumns } from './column';
 import { ActionType, RfTableProp } from './prop';
 
-//黑白名单缓存
-const whiteListSet = new Set<string>();
-const blackListSet = new Set<string>();
+// //黑白名单缓存
+// const whiteListSet = new Set<string>();
+// const blackListSet = new Set<string>();
 
 /**
  * 侦码数据 
@@ -16,24 +16,26 @@ const blackListSet = new Set<string>();
 const RfTable: FC<RfTableProp> = () => {
 
     const { modal, message } = App.useApp();
-    const { rfCaptureData } = useRfCapture();
+    const {
+        rfCaptureData, whiteListCache, blackListCache, addToBlackList, addToWhiteList
+    } = useRfCapture();
     const columns = getRfColumns(rfCaptureData, (actionType, record) => {
         const type = actionType === ActionType.WhiteList ? '白名单' : '黑名单';
         modal.confirm({
             async onOk() {
                 const { IMSI } = record;
                 const params = actionType === ActionType.WhiteList
-                    ? { whiteList: Array.from(whiteListSet).concat(IMSI).join(',') }
-                    : { blackList: Array.from(blackListSet).concat(IMSI).join(',') };
+                    ? { whiteList: whiteListCache.concat(IMSI).join(',') }
+                    : { blackList: blackListCache.concat(IMSI).join(',') };
                 message.destroy();
                 try {
                     const { success, error_message } = await request('/api/v1/set4GBlackWhiteList', params, 'POST');
                     if (success) {
                         message.success(`${type}添加成功`);
                         if (actionType === ActionType.WhiteList) {
-                            whiteListSet.add(IMSI);
+                            addToWhiteList(IMSI);
                         } else {
-                            blackListSet.add(IMSI);
+                            addToBlackList(IMSI);
                         }
                     } else {
                         message.warning(`${type}添加失败 ${error_message}`);

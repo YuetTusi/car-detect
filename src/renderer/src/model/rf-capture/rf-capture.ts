@@ -5,6 +5,8 @@ import { request } from '@renderer/util/http';
 import { RFData } from '@renderer/schema/rf-data';
 
 const useRfCapture = create<RfCaptureState>((setState, getState) => ({
+  blackListCache: [],
+  whiteListCache: [],
   /**
    * 侦码结果
    */
@@ -15,6 +17,38 @@ const useRfCapture = create<RfCaptureState>((setState, getState) => ({
    */
   setRfCaptureData(payload: any[]): void {
     setState({ rfCaptureData: payload });
+  },
+  /**
+   * 加到黑名单
+   * @param payload IMSI
+   * @returns
+   */
+  addToBlackList(payload: string): void {
+    const list = getState().blackListCache;
+    list.push(payload);
+    setState({ blackListCache: Array.from(new Set(list)) });
+  },
+  /**
+   * 加到白名单
+   * @param payload IMSI
+   * @returns
+   */
+  addToWhiteList(payload: string): void {
+    const list = getState().whiteListCache;
+    list.push(payload);
+    setState({ whiteListCache: Array.from(new Set(list)) });
+  },
+  /**
+   * 清空黑名单
+   */
+  clearBlackList(): void {
+    setState({ blackListCache: [] });
+  },
+  /**
+   * 清空白名单
+   */
+  clearWhiteList(): void {
+    setState({ whiteListCache: [] });
   },
   /**
    * 查询侦码数据
@@ -29,23 +63,19 @@ const useRfCapture = create<RfCaptureState>((setState, getState) => ({
         return false;
       }
 
-      if (rfCaptureData.length === 0) {
-        setState({ rfCaptureData: data! });
-      } else {
-        const next: RFData[] = rfCaptureData;
-        for (let i = 0; i < data!.length; i++) {
-          const index = next.findIndex(
-            (item) => item.IMSI.value === data![i].IMSI.value,
-          );
-          if (index === -1) {
-            next.push(data![i]);
-          } else {
-            next[index] = { ...next[index], RSSI: { ...data![i].RSSI } };
-            // next[0].push({ ...has, RSSI: { ...data![i].RSSI } });
-          }
+      const next: RFData[] = rfCaptureData;
+      for (let i = 0; i < data!.length; i++) {
+        const index = next.findIndex(
+          (item) => item.IMSI.value === data![i].IMSI.value,
+        );
+        if (index === -1) {
+          next.push(data![i]);
+        } else {
+          next[index] = { ...next[index], RSSI: { ...data![i].RSSI } };
+          // next[0].push({ ...has, RSSI: { ...data![i].RSSI } });
         }
-        setState({ rfCaptureData: next });
       }
+      setState({ rfCaptureData: next });
       return true;
     } catch (error) {
       console.log(error);

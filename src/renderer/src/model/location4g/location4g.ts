@@ -23,7 +23,6 @@ const useLocation4g = create<Location4gState>((setState, getState) => ({
 
     try {
       const { success, data } = await request(url, null);
-      console.log(data);
       const { location4gData } = getState();
       if (!success) {
         return false;
