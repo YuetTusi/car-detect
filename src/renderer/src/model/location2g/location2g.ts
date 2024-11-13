@@ -1,37 +1,37 @@
-import log from 'electron-log/renderer';
 import { create } from 'zustand';
-import { Location4gState } from '.';
+import log from 'electron-log/renderer';
 import { request } from '@renderer/util/http';
 import { Location } from '@renderer/schema/location';
+import { Location2gState } from '.';
 
-const useLocation4g = create<Location4gState>((setState, getState) => ({
+const useLocation2g = create<Location2gState>((setState, getState) => ({
   /**
    * 定位数据
    */
-  location4gData: [],
+  location2gData: [],
   /**
    * 更新定位数据
    */
-  setLocation4gData(payload: any[]): void {
-    setState({ location4gData: payload });
+  setLocation2gData(payload: any[]): void {
+    setState({ location2gData: payload });
   },
   /**
    * 查询定位数据
    */
-  async queryLocation4gData(): Promise<boolean> {
-    const url = '/api/v1/get4GRFLocationDatas';
+  async queryLocation2gData(): Promise<boolean> {
+    const url = '/api/v1/get2GRFLocationDatas';
 
     try {
       const { success, data } = await request(url, null);
-      const { location4gData } = getState();
+      const { location2gData } = getState();
       if (!success) {
         return false;
       }
 
-      if (location4gData.length === 0) {
-        setState({ location4gData: data! });
+      if (location2gData.length === 0) {
+        setState({ location2gData: data! });
       } else {
-        const next: Location[] = location4gData;
+        const next: Location[] = location2gData;
         for (let i = 0; i < data!.length; i++) {
           const index = next.findIndex(
             (item) => item.IMSI.value === data![i].IMSI.value,
@@ -46,16 +46,16 @@ const useLocation4g = create<Location4gState>((setState, getState) => ({
             };
           }
         }
-        setState({ location4gData: next });
+        setState({ location2gData: next });
       }
       return true;
     } catch (error) {
       log.error(
-        `查询侦码数据失败 @model>location4g>queryLocation4gData():${error.message}`,
+        `查询侦码数据失败 @model>location2g>queryLocation2gData():${error.message}`,
       );
       return false;
     }
   },
 }));
 
-export { useLocation4g };
+export { useLocation2g };

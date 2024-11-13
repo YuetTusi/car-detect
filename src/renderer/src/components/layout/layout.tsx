@@ -9,7 +9,14 @@ import { App, Form, Tabs } from 'antd';
 import { Set4gForm } from './set4g-form';
 import { Set2gForm } from './set2g-form';
 import { useSubscribe } from '@renderer/hook';
-import { useBaseBand, useLocation4g, useRfCapture } from '@renderer/model';
+import {
+    useBaseBand4g,
+    useLocation4g,
+    useRfCapture4g,
+    useBaseBand2g,
+    useLocation2g,
+    useRfCapture2g
+} from '@renderer/model';
 import { Panel } from '../panel';
 import { LayoutBox } from './styled/box';
 import { LayoutProp, Set2gFormValue, Set4gFormValue } from './prop';
@@ -21,15 +28,21 @@ const Layout: FC<LayoutProp> = ({ children }) => {
     const { modal } = App.useApp();
     const [set4gFormRef] = useForm<Set4gFormValue>();
     const [set2gFormRef] = useForm<Set2gFormValue>();
-    const { queryBaseBandData } = useBaseBand();
-    const { queryRfCaptureData } = useRfCapture();
+    const { queryBaseBand4gData } = useBaseBand4g();
+    const { queryRfCapture4gData } = useRfCapture4g();
     const { queryLocation4gData } = useLocation4g();
+    const { queryBaseBand2gData } = useBaseBand2g();
+    const { queryLocation2gData } = useLocation2g();
+    const { queryRfCapture2gData } = useRfCapture2g();
 
     useSubscribe('polling', () => {
         Promise.all([
-            queryBaseBandData(),
-            queryRfCaptureData(),
-            queryLocation4gData()
+            queryBaseBand4gData(),
+            queryRfCapture4gData(),
+            queryLocation4gData(),
+            queryBaseBand2gData(),
+            queryLocation2gData(),
+            queryRfCapture2gData()
         ]);
     });
 
@@ -82,18 +95,22 @@ const Layout: FC<LayoutProp> = ({ children }) => {
                     </NavLink> */}
                     <NavLink to="/" className="fn-button">
                         <DesktopOutlined />
-                        <span>数据展示</span>
+                        <span>4G数据</span>
+                    </NavLink>
+                    <NavLink to="/2g" className="fn-button">
+                        <DesktopOutlined />
+                        <span>2G数据</span>
                     </NavLink>
                     <NavLink to="/log" className="fn-button">
                         <FileTextOutlined />
                         <span>日志记录</span>
                     </NavLink>
                 </div>
-                <button type="button" onClick={async () => {
-                    queryBaseBandData();
-                    queryRfCaptureData();
+                {/* <button type="button" onClick={async () => {
+                    queryBaseBand4gData();
+                    queryRfCapture4gData();
                     queryLocation4gData();
-                }}>test</button>
+                }}>test</button> */}
             </div>
             <div className="layout-content">
                 {children}

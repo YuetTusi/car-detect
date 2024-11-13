@@ -4,10 +4,10 @@ import {
     CheckCircleOutlined, LoadingOutlined
 } from '@ant-design/icons';
 import { App, Col, Row, Button, Form, InputNumber } from 'antd';
-import { Set4gFormProp } from './prop';
 import { request } from '@renderer/util/http';
+import { useBaseBand4g, useLocation4g, useRfCapture4g } from '@renderer/model';
 import { Sort } from './styled/box';
-import { useBaseBand, useLocation4g, useRfCapture } from '@renderer/model';
+import { Set4gFormProp } from './prop';
 
 const { Item } = Form;
 
@@ -18,9 +18,9 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
 
     const { message } = App.useApp();
     const [loading, setLoading] = useState<boolean>(false);
-    const { clearBlackList, clearWhiteList } = useRfCapture();
-    const { setBaseBandData } = useBaseBand();
-    const { setRfCaptureData } = useRfCapture();
+    const { clearBlackList, clearWhiteList } = useRfCapture4g();
+    const { setBaseBand4gData } = useBaseBand4g();
+    const { setRfCaptureData } = useRfCapture4g();
     const { setLocation4gData } = useLocation4g();
 
     return <Form
@@ -118,7 +118,7 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
                                 if (res.success) {
                                     clearBlackList();
                                     clearWhiteList();
-                                    setBaseBandData([]);
+                                    setBaseBand4gData([]);
                                     setLocation4gData([]);
                                     setRfCaptureData([]);
                                     message.success('设置成功');

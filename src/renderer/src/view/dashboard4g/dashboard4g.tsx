@@ -5,12 +5,12 @@ import { BandTable } from './band-table';
 import { RfTable } from './rf-table';
 import { LocationTable } from './location-table';
 import { Category } from './styled/box';
-import { DashboardProp } from './prop';
+import { Dashboard4gProp } from './prop';
 
-const Dashboard: FC<DashboardProp> = () => {
+const Dashboard4g: FC<Dashboard4gProp> = () => {
 
     return <div style={{ margin: '5px' }}>
-        <Panel title="结果">
+        <Panel title="4G">
             <Category>
                 <fieldset>
                     <legend>设备</legend>
@@ -39,4 +39,4 @@ const Dashboard: FC<DashboardProp> = () => {
     </div>;
 };
 
-export { Dashboard };
+export { Dashboard4g };

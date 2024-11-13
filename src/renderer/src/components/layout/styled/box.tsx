@@ -13,7 +13,7 @@ export const LayoutBox = styled.div`
     flex-direction: row;
 
     .fn-button-group{
-        width: 300px;
+        width: 380px;
         border:1px solid #d29d49;
         border-radius: 3px;
         display: flex;

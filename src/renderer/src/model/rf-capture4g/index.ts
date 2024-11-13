@@ -1,7 +1,7 @@
 import { RFData } from '@renderer/schema/rf-data';
-import { useRfCapture } from './rf-capture';
+import { useRfCapture4g } from './rf-capture4g';
 
-interface RfCaptureState {
+interface RfCapture4gState {
   /**
    * 黑名单缓存
    */
@@ -13,12 +13,12 @@ interface RfCaptureState {
   /**
    * 侦码结果
    */
-  rfCaptureData: RFData[];
+  rfCapture4gData: RFData[];
   /**
    * 更新侦码结果
    * @param payload 侦码数据
    */
-  setRfCaptureData: (payload: any[]) => void;
+  setRfCapture4gData: (payload: any[]) => void;
   /**
    * 加到黑名单
    * @param payload IMSI
@@ -43,8 +43,8 @@ interface RfCaptureState {
    * 查询侦码数据
    * @returns
    */
-  queryRfCaptureData: () => Promise<boolean>;
+  queryRfCapture4gData: () => Promise<boolean>;
 }
 
-export type { RfCaptureState };
-export { useRfCapture };
+export type { RfCapture4gState };
+export { useRfCapture4g };

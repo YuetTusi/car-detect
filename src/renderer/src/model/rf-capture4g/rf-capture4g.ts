@@ -1,22 +1,22 @@
 import log from 'electron-log/renderer';
 import { create } from 'zustand';
-import { RfCaptureState } from './index';
+import { RfCapture4gState } from './index';
 import { request } from '@renderer/util/http';
 import { RFData } from '@renderer/schema/rf-data';
 
-const useRfCapture = create<RfCaptureState>((setState, getState) => ({
+const useRfCapture4g = create<RfCapture4gState>((setState, getState) => ({
   blackListCache: [],
   whiteListCache: [],
   /**
    * 侦码结果
    */
-  rfCaptureData: [],
+  rfCapture4gData: [],
   /**
    * 更新侦码结果
    * @param payload 侦码数据
    */
-  setRfCaptureData(payload: any[]): void {
-    setState({ rfCaptureData: payload });
+  setRfCapture4gData(payload: any[]): void {
+    setState({ rfCapture4gData: payload });
   },
   /**
    * 加到黑名单
@@ -54,16 +54,16 @@ const useRfCapture = create<RfCaptureState>((setState, getState) => ({
    * 查询侦码数据
    * @returns
    */
-  async queryRfCaptureData(): Promise<boolean> {
+  async queryRfCapture4gData(): Promise<boolean> {
     const url = '/api/v1/get4GRFCaptureDatas';
     try {
       const { success, data } = await request<RFData[]>(url, null);
-      const { rfCaptureData } = getState();
+      const { rfCapture4gData } = getState();
       if (!success) {
         return false;
       }
 
-      const next: RFData[] = rfCaptureData;
+      const next: RFData[] = rfCapture4gData;
       for (let i = 0; i < data!.length; i++) {
         const index = next.findIndex(
           (item) => item.IMSI.value === data![i].IMSI.value,
@@ -75,16 +75,16 @@ const useRfCapture = create<RfCaptureState>((setState, getState) => ({
           // next[0].push({ ...has, RSSI: { ...data![i].RSSI } });
         }
       }
-      setState({ rfCaptureData: next });
+      setState({ rfCapture4gData: next });
       return true;
     } catch (error) {
       console.log(error);
       log.error(
-        `查询侦码数据失败 @model>rf>queryRfCaptureData():${error.message}`,
+        `查询侦码数据失败 @model>rf-capture4g>queryRfCapture4gData():${error.message}`,
       );
       return false;
     }
   },
 }));
 
-export { useRfCapture };
+export { useRfCapture4g };

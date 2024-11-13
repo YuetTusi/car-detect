@@ -5,7 +5,7 @@ import {
 } from '@ant-design/icons';
 import { App, Col, Row, Button, Form, InputNumber } from 'antd';
 import { request } from '@renderer/util/http';
-// import { useBaseBand, useLocation4g, useRfCapture } from '@renderer/model';
+import { useBaseBand2g, useLocation2g, useRfCapture2g } from '@renderer/model';
 import { Sort } from './styled/box';
 import { Set2gFormProp } from './prop';
 
@@ -18,10 +18,9 @@ const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
 
     const { message } = App.useApp();
     const [loading, setLoading] = useState<boolean>(false);
-    // const { clearBlackList, clearWhiteList } = useRfCapture();
-    // const { setBaseBandData } = useBaseBand();
-    // const { setRfCaptureData } = useRfCapture();
-    // const { setLocation4gData } = useLocation4g();
+    const { clearBlackList, clearWhiteList, setRfCapture2gData } = useRfCapture2g();
+    const { setBaseBand2gData } = useBaseBand2g();
+    const { setLocation2gData } = useLocation2g();
 
     return <Form
         form={formRef}
@@ -116,11 +115,11 @@ const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
                                 const res = await request('/api/v1/enable2GRF',
                                     mapValues(values, value => typeof value === 'number' ? String(value) : value), 'POST');
                                 if (res.success) {
-                                    // clearBlackList();
-                                    // clearWhiteList();
-                                    // setBaseBandData([]);
-                                    // setLocation4gData([]);
-                                    // setRfCaptureData([]);
+                                    clearBlackList();
+                                    clearWhiteList();
+                                    setBaseBand2gData([]);
+                                    setLocation2gData([]);
+                                    setRfCapture2gData([]);
                                     message.success('设置成功');
                                 } else {
                                     message.warning(`设置失败 ${res.error_message}`);

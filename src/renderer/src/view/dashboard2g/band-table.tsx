@@ -1,22 +1,22 @@
 import { FC } from 'react';
 import { Table } from 'antd';
-import { useBaseBand } from '@renderer/model';
+import { useBaseBand2g } from '@renderer/model';
+import { helper } from '@renderer/util/helper';
 import { getBandColumns } from './column';
 import { BandTableProp } from './prop';
-import { helper } from '@renderer/util/helper';
 
 /**
  * 设备数据 
  */
 const BandTable: FC<BandTableProp> = () => {
 
-    const { baseBandData } = useBaseBand();
-    const columns = getBandColumns(baseBandData);
+    const { baseBand2gData } = useBaseBand2g();
+    const columns = getBandColumns(baseBand2gData);
 
     const renderData = (): any[] => {
         const fields: string[] = columns.map(col => col.dataIndex);//取所有的列名
 
-        return baseBandData.map(item => {
+        return baseBand2gData.map(item => {
             let row: Record<string, any> = {};
             for (let i = 0; i < fields.length; i++) {
                 row = {

@@ -1,26 +1,26 @@
 import log from 'electron-log/renderer';
 import { create } from 'zustand';
-import { BaseBandState } from './index';
+import { BaseBand4gState } from './index';
 import { request } from '@renderer/util/http';
 import { BasebandInfo } from '@renderer/schema/baseband-info';
 
-const useBaseBand = create<BaseBandState>((setState) => ({
+const useBaseBand4g = create<BaseBand4gState>((setState) => ({
   /**
    * 设备数据
    */
-  baseBandData: [],
+  baseBand4gData: [],
   /**
    * 更新设备数据
    * @param payload 设备数据
    */
-  setBaseBandData(payload: BasebandInfo[]): void {
-    setState({ baseBandData: payload });
+  setBaseBand4gData(payload: BasebandInfo[]): void {
+    setState({ baseBand4gData: payload });
   },
   /**
    * 查询设备数据
    * @returns
    */
-  async queryBaseBandData(): Promise<boolean> {
+  async queryBaseBand4gData(): Promise<boolean> {
     try {
       const { success, data } = await request<BasebandInfo[]>(
         '/api/v1/get4GBasebandInfo',
@@ -28,18 +28,18 @@ const useBaseBand = create<BaseBandState>((setState) => ({
       );
 
       if (!success) {
-        setState({ baseBandData: [] });
+        setState({ baseBand4gData: [] });
         return false;
       }
-      setState({ baseBandData: data ?? [] });
+      setState({ baseBand4gData: data ?? [] });
       return true;
     } catch (error) {
       log.error(
-        `查询设备数据失败 @model>base-band>queryBaseBandData():${error.message}`,
+        `查询设备数据失败 @model>base-band4g>queryBaseBand4gData():${error.message}`,
       );
       return false;
     }
   },
 }));
 
-export { useBaseBand };
+export { useBaseBand4g };

@@ -11,7 +11,7 @@ export enum ActionType {
   BlackList,
 }
 
-export interface DashboardProp extends PropsWithChildren {}
+export interface Dashboard4gProp extends PropsWithChildren {}
 
 export interface BandTableProp extends PropsWithChildren {}
 

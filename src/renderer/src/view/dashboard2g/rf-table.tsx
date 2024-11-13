@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { App, Table } from 'antd';
 import { helper } from '@renderer/util/helper';
-import { useRfCapture } from '@renderer/model';
+import { useRfCapture2g } from '@renderer/model';
 import { request } from '@renderer/util/http';
 import { getRfColumns } from './column';
 import { ActionType, RfTableProp } from './prop';
@@ -17,9 +17,9 @@ const RfTable: FC<RfTableProp> = () => {
 
     const { modal, message } = App.useApp();
     const {
-        rfCaptureData, whiteListCache, blackListCache, addToBlackList, addToWhiteList
-    } = useRfCapture();
-    const columns = getRfColumns(rfCaptureData, (actionType, record) => {
+        rfCapture2gData, whiteListCache, blackListCache, addToBlackList, addToWhiteList
+    } = useRfCapture2g();
+    const columns = getRfColumns(rfCapture2gData, (actionType, record) => {
         const type = actionType === ActionType.WhiteList ? '白名单' : '黑名单';
         modal.confirm({
             async onOk() {
@@ -29,7 +29,7 @@ const RfTable: FC<RfTableProp> = () => {
                     : { blackList: blackListCache.concat(IMSI).join(',') };
                 message.destroy();
                 try {
-                    const { success, error_message } = await request('/api/v1/set4GBlackWhiteList', params, 'POST');
+                    const { success, error_message } = await request('/api/v1/set2GBlackWhiteList', params, 'POST');
                     if (success) {
                         message.success(`${type}添加成功`);
                         if (actionType === ActionType.WhiteList) {
@@ -56,7 +56,7 @@ const RfTable: FC<RfTableProp> = () => {
     const renderData = (): any[] => {
         const fields: string[] = columns.map(col => col.dataIndex);//取所有的列名
 
-        return rfCaptureData.map(item => {
+        return rfCapture2gData.map(item => {
             let row: Record<string, any> = {};
             for (let i = 0; i < fields.length; i++) {
                 row = {
