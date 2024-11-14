@@ -6,10 +6,6 @@ import { request } from '@renderer/util/http';
 import { getRfColumns } from './column';
 import { ActionType, RfTableProp } from './prop';
 
-// //黑白名单缓存
-// const whiteListSet = new Set<string>();
-// const blackListSet = new Set<string>();
-
 /**
  * 侦码数据 
  */
@@ -17,19 +13,40 @@ const RfTable: FC<RfTableProp> = () => {
 
     const { modal, message } = App.useApp();
     const {
-        rfCapture2gData, whiteListCache, blackListCache, addToBlackList, addToWhiteList
+        rfCapture2gData,
+        whiteListCache,
+        blackListCache,
+        addToBlackList,
+        addToWhiteList,
+        // setRfCapture2gData
     } = useRfCapture2g();
-    const columns = getRfColumns(rfCapture2gData, (actionType, record) => {
-        const type = actionType === ActionType.WhiteList ? '白名单' : '黑名单';
+    // const { setBaseBand2gData } = useBaseBand2g();
+    // const { setLocation2gData } = useLocation2g();
+    const columns = getRfColumns(rfCapture2gData, (actionType, { IMSI }) => {
+        let type: string = '';
+        let params: Record<string, any> = {};
+        switch (actionType) {
+            case ActionType.BlackList:
+                type = '黑名单';
+                params = { blackList: blackListCache.concat(IMSI).join(',') };
+                break;
+            case ActionType.WhiteList:
+                type = '白名单';
+                params = { whiteList: whiteListCache.concat(IMSI).join(',') };
+                break;
+            default:
+                console.warn('未知类型', actionType);
+                break;
+        }
         modal.confirm({
             async onOk() {
-                const { IMSI } = record;
-                const params = actionType === ActionType.WhiteList
-                    ? { whiteList: whiteListCache.concat(IMSI).join(',') }
-                    : { blackList: blackListCache.concat(IMSI).join(',') };
                 message.destroy();
                 try {
-                    const { success, error_message } = await request('/api/v1/set2GBlackWhiteList', params, 'POST');
+                    const { success, error_message } = await request('/api/v1/enable2GRF', {
+                        "cmArfcn": "53",
+                        "cuArfcn": "125",
+                        ...params
+                    }, 'POST');
                     if (success) {
                         message.success(`${type}添加成功`);
                         if (actionType === ActionType.WhiteList) {
@@ -37,6 +54,9 @@ const RfTable: FC<RfTableProp> = () => {
                         } else {
                             addToBlackList(IMSI);
                         }
+                        // setBaseBand2gData([]);
+                        // setLocation2gData([]);
+                        // setRfCapture2gData([]);
                     } else {
                         message.warning(`${type}添加失败 ${error_message}`);
                     }
@@ -47,7 +67,7 @@ const RfTable: FC<RfTableProp> = () => {
             },
             centered: true,
             title: type,
-            content: `确认将 IMSI:${record.IMSI} 加入${type}？`,
+            content: `确认将 IMSI:${IMSI} 加入${type}？`,
             okText: '是',
             cancelText: '否'
         });

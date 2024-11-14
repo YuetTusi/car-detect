@@ -37,7 +37,7 @@ export const getBandColumns = (data: BasebandInfo[]): any[] => {
             dataIndex: item,
             textWrap: 'word-break',
             // ellipsis: true,
-            width: index === 0 ? 50 : undefined
+            width: index === 0 ? 60 : undefined
         };
     });
 };
@@ -71,7 +71,7 @@ export const getRfColumns = (data: RFData[], handle: (actionType: ActionType, re
             dataIndex: item,
             textWrap: 'word-break',
             // ellipsis: true,
-            width: index === 0 ? 50 : undefined
+            width: index === 0 ? 80 : undefined
         };
     });
 
@@ -84,7 +84,7 @@ export const getRfColumns = (data: RFData[], handle: (actionType: ActionType, re
             align: 'center',
             render: (_, record: Record<string, any>) => {
                 return <Group>
-                    <Button
+                    {/* <Button
                         onClick={() => {
                             handle(ActionType.WhiteList, record);
                         }}
@@ -92,7 +92,7 @@ export const getRfColumns = (data: RFData[], handle: (actionType: ActionType, re
                         size="small">
                         <PlusCircleFilled />
                         <span>白名单</span>
-                    </Button>
+                    </Button> */}
                     <Button
                         onClick={() => {
                             handle(ActionType.BlackList, record);

@@ -1,5 +1,6 @@
 import mapValues from 'lodash/mapValues';
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     CheckCircleOutlined, LoadingOutlined
 } from '@ant-design/icons';
@@ -16,6 +17,7 @@ const { Item } = Form;
  */
 const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
 
+    const navigate = useNavigate();
     const { message } = App.useApp();
     const [loading, setLoading] = useState<boolean>(false);
     const { clearBlackList, clearWhiteList, setRfCapture2gData } = useRfCapture2g();
@@ -120,6 +122,7 @@ const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
                                     setBaseBand2gData([]);
                                     setLocation2gData([]);
                                     setRfCapture2gData([]);
+                                    navigate('/2g');
                                     message.success('设置成功');
                                 } else {
                                     message.warning(`设置失败 ${res.error_message}`);

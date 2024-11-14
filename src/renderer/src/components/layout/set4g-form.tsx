@@ -20,7 +20,7 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const { clearBlackList, clearWhiteList } = useRfCapture4g();
     const { setBaseBand4gData } = useBaseBand4g();
-    const { setRfCaptureData } = useRfCapture4g();
+    const { setRfCapture4gData } = useRfCapture4g();
     const { setLocation4gData } = useLocation4g();
 
     return <Form
@@ -120,7 +120,7 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
                                     clearWhiteList();
                                     setBaseBand4gData([]);
                                     setLocation4gData([]);
-                                    setRfCaptureData([]);
+                                    setRfCapture4gData([]);
                                     message.success('设置成功');
                                 } else {
                                     message.warning(`设置失败 ${res.error_message}`);
