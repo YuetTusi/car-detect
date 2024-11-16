@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import union from 'lodash/union';
 import { PlusCircleFilled } from '@ant-design/icons';
 import { Button } from 'antd';
@@ -37,7 +38,11 @@ export const getBandColumns = (data: BasebandInfo[]): any[] => {
             dataIndex: item,
             textWrap: 'word-break',
             // ellipsis: true,
-            width: index === 0 ? 60 : undefined
+            width: title?.includes('时间') ? 150 : undefined,
+            align: title?.includes('时间') ? 'center' : 'left',
+            render: title?.includes('时间') ? (value: string): JSX.Element => {
+                return <span>{dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss')}</span>;
+            } : undefined
         };
     });
 };
@@ -71,7 +76,11 @@ export const getRfColumns = (data: RFData[], handle: (actionType: ActionType, re
             dataIndex: item,
             textWrap: 'word-break',
             // ellipsis: true,
-            width: index === 0 ? 80 : undefined
+            width: title?.includes('时间') ? 150 : undefined,
+            align: title?.includes('时间') ? 'center' : 'left',
+            render: title?.includes('时间') ? (value: string): JSX.Element => {
+                return <span>{dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss')}</span>;
+            } : undefined
         };
     });
 
@@ -84,15 +93,6 @@ export const getRfColumns = (data: RFData[], handle: (actionType: ActionType, re
             align: 'center',
             render: (_, record: Record<string, any>) => {
                 return <Group>
-                    {/* <Button
-                        onClick={() => {
-                            handle(ActionType.WhiteList, record);
-                        }}
-                        type="primary"
-                        size="small">
-                        <PlusCircleFilled />
-                        <span>白名单</span>
-                    </Button> */}
                     <Button
                         onClick={() => {
                             handle(ActionType.BlackList, record);
@@ -139,7 +139,11 @@ export const getLocationColumns = (data: Location[]): any[] => {
             dataIndex: item,
             textWrap: 'word-break',
             // ellipsis: true,
-            width: index === 0 ? 50 : undefined
+            width: title?.includes('时间') ? 150 : undefined,
+            align: title?.includes('时间') ? 'center' : 'left',
+            render: title?.includes('时间') ? (value: string): JSX.Element => {
+                return <span>{dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss')}</span>;
+            } : undefined
         };
     });
 };

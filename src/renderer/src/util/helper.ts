@@ -20,7 +20,7 @@ export const default4gSetting = {
 export const default2gSetting = {
   cmArfcn: '53',
   cuArfcn: '125',
-  blackList: '460021045638918,460046670506574,460077014840293,460085352403980',
+  blackList: '',
 };
 
 export const helper = {

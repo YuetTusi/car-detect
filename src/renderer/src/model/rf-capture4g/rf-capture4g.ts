@@ -58,24 +58,13 @@ const useRfCapture4g = create<RfCapture4gState>((setState, getState) => ({
     const url = '/api/v1/get4GRFCaptureDatas';
     try {
       const { success, data } = await request<RFData[]>(url, null);
-      const { rfCapture4gData } = getState();
+      console.log(data);
+      // const { rfCapture4gData } = getState();
       if (!success) {
         return false;
       }
 
-      const next: RFData[] = rfCapture4gData;
-      for (let i = 0; i < data!.length; i++) {
-        const index = next.findIndex(
-          (item) => item.IMSI.value === data![i].IMSI.value,
-        );
-        if (index === -1) {
-          next.push(data![i]);
-        } else {
-          next[index] = { ...next[index], RSSI: { ...data![i].RSSI } };
-          // next[0].push({ ...has, RSSI: { ...data![i].RSSI } });
-        }
-      }
-      setState({ rfCapture4gData: next });
+      setState({ rfCapture4gData: data ?? [] });
       return true;
     } catch (error) {
       console.log(error);

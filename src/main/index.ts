@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { access } from 'fs/promises';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import log from 'electron-log/main';
@@ -73,6 +74,16 @@ app.whenReady().then(() => {
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window);
+  });
+
+  ipcMain.handle('is-set', async () => {
+    try {
+      await access(join(cwd, './set'));
+      return true;
+    } catch (error) {
+      console.warn(error);
+      return false;
+    }
   });
 
   //退出应用

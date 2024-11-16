@@ -1,10 +1,12 @@
-import { FC } from 'react';
-import { App, Table } from 'antd';
+import { FC, useState } from 'react';
+import { PlusCircleFilled } from '@ant-design/icons';
+import { App, Button, Table } from 'antd';
 import { helper } from '@renderer/util/helper';
 import { useRfCapture4g } from '@renderer/model';
 import { request } from '@renderer/util/http';
 import { getRfColumns } from './column';
 import { ActionType, RfTableProp } from './prop';
+import { ButtonBar } from './styled/box';
 
 // //黑白名单缓存
 // const whiteListSet = new Set<string>();
@@ -16,6 +18,7 @@ import { ActionType, RfTableProp } from './prop';
 const RfTable: FC<RfTableProp> = () => {
 
     const { modal, message } = App.useApp();
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const {
         rfCapture4gData, whiteListCache, blackListCache, addToBlackList, addToWhiteList
     } = useRfCapture4g();
@@ -68,14 +71,31 @@ const RfTable: FC<RfTableProp> = () => {
         });
     };
 
-    return <Table
-        columns={columns}
-        dataSource={renderData()}
-        rowKey={() => helper.nextId()}
-        bordered={true}
-        pagination={false}
-    // scroll={{ y: 800 }}
-    />;
+    return <>
+        <ButtonBar>
+            <Button
+                disabled={selectedRowKeys.length === 0}
+                type="primary">
+                <PlusCircleFilled />
+                <span>黑名单</span>
+            </Button>
+        </ButtonBar>
+
+        <Table
+            columns={columns}
+            dataSource={renderData()}
+            rowKey={'IMSI'}
+            rowSelection={{
+                selectedRowKeys,
+                onChange(selectedRowKeys) {
+                    setSelectedRowKeys(selectedRowKeys);
+                },
+            }}
+            bordered={true}
+            pagination={false}
+        // scroll={{ y: 800 }}
+        />
+    </>;
 };
 
 export { RfTable };

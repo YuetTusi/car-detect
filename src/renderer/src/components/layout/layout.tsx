@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 import { App, Form, Tabs } from 'antd';
 import { Set4gForm } from './set4g-form';
 import { Set2gForm } from './set2g-form';
-import { useSubscribe } from '@renderer/hook';
+import { useIsSet, useSubscribe } from '@renderer/hook';
 import {
     useBaseBand4g,
     useLocation4g,
@@ -28,6 +28,7 @@ const Layout: FC<LayoutProp> = ({ children }) => {
     const { modal } = App.useApp();
     const [set4gFormRef] = useForm<Set4gFormValue>();
     const [set2gFormRef] = useForm<Set2gFormValue>();
+    const isSet = useIsSet();
     const { queryBaseBand4gData } = useBaseBand4g();
     const { queryRfCapture4gData } = useRfCapture4g();
     const { queryLocation4gData } = useLocation4g();
@@ -63,7 +64,7 @@ const Layout: FC<LayoutProp> = ({ children }) => {
                 <CarOutlined style={{ color: '#fdc46a' }} />
                 <span>车检管理系统</span>
             </div>
-            <div className="layout-fn">
+            <div className="layout-fn" style={{ display: isSet ? 'block' : 'none' }}>
                 <div style={{ padding: '0 5px 5px 5px' }}>
                     <Panel title="移动设置">
                         <Tabs
@@ -107,16 +108,16 @@ const Layout: FC<LayoutProp> = ({ children }) => {
                     </NavLink>
                 </div>
                 {/* <button type="button" onClick={async () => {
-                    queryBaseBand4gData();
-                    queryRfCapture4gData();
-                    queryLocation4gData();
+                    const isSet = await window.electron.ipcRenderer.invoke('is-set');
+                    console.clear();
+                    console.log(isSet);
                 }}>test</button> */}
             </div>
-            <div className="layout-content">
+            <div className="layout-content" style={{ left: isSet ? '0px' : '-340px' }}>
                 {children}
             </div>
         </div>
-    </LayoutBox>;
+    </LayoutBox >;
 };
 
 export { Layout };

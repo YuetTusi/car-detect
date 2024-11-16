@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 export const ResultTableBox = styled.table`
     
     font-size: 1.4rem;
@@ -45,4 +44,9 @@ export const Category = styled.div`
             border-radius: 2px;
         }
     }
+`;
+
+export const ButtonBar = styled.div`
+    text-align: right;
+    padding-bottom: 14px;
 `;
