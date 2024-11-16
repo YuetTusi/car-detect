@@ -1,10 +1,11 @@
-import { FC } from 'react';
-import { App, Table } from 'antd';
-import { helper } from '@renderer/util/helper';
-import { useRfCapture2g } from '@renderer/model';
+import { FC, useState } from 'react';
+import { App, Button, Table } from 'antd';
+import { PlusCircleFilled } from '@ant-design/icons';
 import { request } from '@renderer/util/http';
+import { useRfCapture2g } from '@renderer/model';
 import { getRfColumns } from './column';
-import { ActionType, RfTableProp } from './prop';
+import { RfTableProp } from './prop';
+import { ButtonBar } from './styled/box';
 
 /**
  * 侦码数据 
@@ -12,66 +13,13 @@ import { ActionType, RfTableProp } from './prop';
 const RfTable: FC<RfTableProp> = () => {
 
     const { modal, message } = App.useApp();
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const {
-        rfCapture2gData,
-        whiteListCache,
-        blackListCache,
-        addToBlackList,
-        addToWhiteList,
-        // setRfCapture2gData
+        rfCapture2gData
     } = useRfCapture2g();
-    // const { setBaseBand2gData } = useBaseBand2g();
-    // const { setLocation2gData } = useLocation2g();
-    const columns = getRfColumns(rfCapture2gData, (actionType, { IMSI }) => {
-        let type: string = '';
-        let params: Record<string, any> = {};
-        switch (actionType) {
-            case ActionType.BlackList:
-                type = '黑名单';
-                params = { blackList: blackListCache.concat(IMSI).join(',') };
-                break;
-            case ActionType.WhiteList:
-                type = '白名单';
-                params = { whiteList: whiteListCache.concat(IMSI).join(',') };
-                break;
-            default:
-                console.warn('未知类型', actionType);
-                break;
-        }
-        modal.confirm({
-            async onOk() {
-                message.destroy();
-                try {
-                    const { success, error_message } = await request('/api/v1/enable2GRF', {
-                        "cmArfcn": "53",
-                        "cuArfcn": "125",
-                        ...params
-                    }, 'POST');
-                    if (success) {
-                        message.success(`${type}添加成功`);
-                        if (actionType === ActionType.WhiteList) {
-                            addToWhiteList(IMSI);
-                        } else {
-                            addToBlackList(IMSI);
-                        }
-                        // setBaseBand2gData([]);
-                        // setLocation2gData([]);
-                        // setRfCapture2gData([]);
-                    } else {
-                        message.warning(`${type}添加失败 ${error_message}`);
-                    }
-                } catch (error) {
-                    console.log(error);
-                    message.warning(`操作失败 ${error.message}`);
-                }
-            },
-            centered: true,
-            title: type,
-            content: `确认将 IMSI:${IMSI} 加入${type}？`,
-            okText: '是',
-            cancelText: '否'
-        });
-    });
+
+
+    const columns = getRfColumns(rfCapture2gData);
 
     const renderData = (): any[] => {
         const fields: string[] = columns.map(col => col.dataIndex);//取所有的列名
@@ -88,14 +36,57 @@ const RfTable: FC<RfTableProp> = () => {
         });
     };
 
-    return <Table
-        columns={columns}
-        dataSource={renderData()}
-        rowKey={() => helper.nextId()}
-        bordered={true}
-        pagination={false}
-    // scroll={{ y: 800 }}
-    />;
+    return <>
+        <ButtonBar>
+            <Button
+                onClick={() => {
+                    modal.confirm({
+                        async onOk() {
+                            message.destroy();
+                            try {
+                                const { success, error_message } = await request('/api/v1/enable2GRF', {
+                                    "cmArfcn": "50",
+                                    "cuArfcn": "120",
+                                    blackList: selectedRowKeys.join(',')
+                                }, 'POST');
+                                if (success) {
+                                    message.success('添加成功');
+                                    setSelectedRowKeys([]);
+                                } else {
+                                    message.warning(`添加失败 ${error_message}`);
+                                }
+                            } catch (error) {
+                                message.warning(`添加失败 ${error.message}`);
+                            }
+                        },
+                        centered: true,
+                        content: `确认将勾选的 ${selectedRowKeys.length} 项侦码数据加入黑名单？`,
+                        title: '黑名单',
+                        okText: '是',
+                        cancelText: '否'
+                    });
+                }}
+                disabled={selectedRowKeys.length === 0}
+                type="primary">
+                <PlusCircleFilled />
+                <span>黑名单</span>
+            </Button>
+        </ButtonBar>
+        <Table
+            columns={columns}
+            dataSource={renderData()}
+            rowKey="IMEI"
+            rowSelection={{
+                selectedRowKeys,
+                onChange(selectedRowKeys) {
+                    setSelectedRowKeys(selectedRowKeys);
+                },
+            }}
+            bordered={true}
+            pagination={false}
+        // scroll={{ y: 800 }}
+        />
+    </>;
 };
 
 export { RfTable };

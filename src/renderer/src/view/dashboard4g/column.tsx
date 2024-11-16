@@ -47,7 +47,7 @@ export const getBandColumns = (data: BasebandInfo[]): any[] => {
 /**
  * 侦码表列头
  */
-export const getRfColumns = (data: RFData[], handle: (actionType: ActionType, record: Record<string, any>) => void): any[] => {
+export const getRfColumns = (data: RFData[]): any[] => {
 
     let allfields: string[] = [];
     data.forEach(item => {

@@ -46,3 +46,9 @@ export const Category = styled.div`
         }
     }
 `;
+
+
+export const ButtonBar = styled.div`
+    text-align: right;
+    padding-bottom: 14px;
+`;

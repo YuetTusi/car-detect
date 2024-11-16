@@ -4,9 +4,7 @@ import { RfCapture2gState } from './index';
 import { request } from '@renderer/util/http';
 import { RFData } from '@renderer/schema/rf-data';
 
-const useRfCapture2g = create<RfCapture2gState>((setState, getState) => ({
-  blackListCache: [],
-  whiteListCache: [],
+const useRfCapture2g = create<RfCapture2gState>((setState) => ({
   /**
    * 侦码结果
    */
@@ -19,38 +17,6 @@ const useRfCapture2g = create<RfCapture2gState>((setState, getState) => ({
     setState({ rfCapture2gData: payload });
   },
   /**
-   * 加到黑名单
-   * @param payload IMSI
-   * @returns
-   */
-  addToBlackList(payload: string): void {
-    const list = getState().blackListCache;
-    list.push(payload);
-    setState({ blackListCache: Array.from(new Set(list)) });
-  },
-  /**
-   * 加到白名单
-   * @param payload IMSI
-   * @returns
-   */
-  addToWhiteList(payload: string): void {
-    const list = getState().whiteListCache;
-    list.push(payload);
-    setState({ whiteListCache: Array.from(new Set(list)) });
-  },
-  /**
-   * 清空黑名单
-   */
-  clearBlackList(): void {
-    setState({ blackListCache: [] });
-  },
-  /**
-   * 清空白名单
-   */
-  clearWhiteList(): void {
-    setState({ whiteListCache: [] });
-  },
-  /**
    * 查询侦码数据
    * @returns
    */
@@ -58,24 +24,12 @@ const useRfCapture2g = create<RfCapture2gState>((setState, getState) => ({
     const url = '/api/v1/get2GRFCaptureDatas';
     try {
       const { success, data } = await request<RFData[]>(url, null);
-      const { rfCapture2gData } = getState();
       if (!success) {
         return false;
       }
+      console.log(data ?? []);
 
-      const next: RFData[] = rfCapture2gData;
-      for (let i = 0; i < data!.length; i++) {
-        const index = next.findIndex(
-          (item) => item.IMSI.value === data![i].IMSI.value,
-        );
-        if (index === -1) {
-          next.push(data![i]);
-        } else {
-          next[index] = { ...next[index], RSSI: { ...data![i].RSSI } };
-          // next[0].push({ ...has, RSSI: { ...data![i].RSSI } });
-        }
-      }
-      setState({ rfCapture2gData: next });
+      setState({ rfCapture2gData: data ?? [] });
       return true;
     } catch (error) {
       console.log(error);

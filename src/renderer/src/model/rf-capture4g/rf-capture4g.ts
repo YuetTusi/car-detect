@@ -1,12 +1,10 @@
-import log from 'electron-log/renderer';
 import { create } from 'zustand';
-import { RfCapture4gState } from './index';
+import log from 'electron-log/renderer';
 import { request } from '@renderer/util/http';
 import { RFData } from '@renderer/schema/rf-data';
+import { RfCapture4gState } from './index';
 
-const useRfCapture4g = create<RfCapture4gState>((setState, getState) => ({
-  blackListCache: [],
-  whiteListCache: [],
+const useRfCapture4g = create<RfCapture4gState>((setState) => ({
   /**
    * 侦码结果
    */
@@ -19,38 +17,6 @@ const useRfCapture4g = create<RfCapture4gState>((setState, getState) => ({
     setState({ rfCapture4gData: payload });
   },
   /**
-   * 加到黑名单
-   * @param payload IMSI
-   * @returns
-   */
-  addToBlackList(payload: string): void {
-    const list = getState().blackListCache;
-    list.push(payload);
-    setState({ blackListCache: Array.from(new Set(list)) });
-  },
-  /**
-   * 加到白名单
-   * @param payload IMSI
-   * @returns
-   */
-  addToWhiteList(payload: string): void {
-    const list = getState().whiteListCache;
-    list.push(payload);
-    setState({ whiteListCache: Array.from(new Set(list)) });
-  },
-  /**
-   * 清空黑名单
-   */
-  clearBlackList(): void {
-    setState({ blackListCache: [] });
-  },
-  /**
-   * 清空白名单
-   */
-  clearWhiteList(): void {
-    setState({ whiteListCache: [] });
-  },
-  /**
    * 查询侦码数据
    * @returns
    */
@@ -58,8 +24,7 @@ const useRfCapture4g = create<RfCapture4gState>((setState, getState) => ({
     const url = '/api/v1/get4GRFCaptureDatas';
     try {
       const { success, data } = await request<RFData[]>(url, null);
-      console.log(data);
-      // const { rfCapture4gData } = getState();
+
       if (!success) {
         return false;
       }

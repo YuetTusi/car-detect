@@ -18,7 +18,6 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
 
     const { message } = App.useApp();
     const [loading, setLoading] = useState<boolean>(false);
-    const { clearBlackList, clearWhiteList } = useRfCapture4g();
     const { setBaseBand4gData } = useBaseBand4g();
     const { setRfCapture4gData } = useRfCapture4g();
     const { setLocation4gData } = useLocation4g();
@@ -116,8 +115,6 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
                                 const res = await request('/api/v1/enable4GRF',
                                     mapValues(values, value => typeof value === 'number' ? String(value) : value), 'POST');
                                 if (res.success) {
-                                    clearBlackList();
-                                    clearWhiteList();
                                     setBaseBand4gData([]);
                                     setLocation4gData([]);
                                     setRfCapture4gData([]);

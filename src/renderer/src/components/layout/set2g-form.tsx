@@ -20,7 +20,7 @@ const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
     const navigate = useNavigate();
     const { message } = App.useApp();
     const [loading, setLoading] = useState<boolean>(false);
-    const { clearBlackList, clearWhiteList, setRfCapture2gData } = useRfCapture2g();
+    const { setRfCapture2gData } = useRfCapture2g();
     const { setBaseBand2gData } = useBaseBand2g();
     const { setLocation2gData } = useLocation2g();
 
@@ -117,8 +117,6 @@ const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
                                 const res = await request('/api/v1/enable2GRF',
                                     mapValues(values, value => typeof value === 'number' ? String(value) : value), 'POST');
                                 if (res.success) {
-                                    clearBlackList();
-                                    clearWhiteList();
                                     setBaseBand2gData([]);
                                     setLocation2gData([]);
                                     setRfCapture2gData([]);
