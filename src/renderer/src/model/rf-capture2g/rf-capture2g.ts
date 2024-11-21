@@ -27,8 +27,6 @@ const useRfCapture2g = create<RfCapture2gState>((setState) => ({
       if (!success) {
         return false;
       }
-      console.log(data ?? []);
-
       setState({ rfCapture2gData: data ?? [] });
       return true;
     } catch (error) {

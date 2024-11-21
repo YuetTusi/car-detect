@@ -46,6 +46,14 @@ export const Category = styled.div`
     }
 `;
 
+export const SwitchBar = styled.div`
+    text-align: right;
+    padding: 14px 14px 0 0 ;
+    .ant-btn{
+        margin-left: 5px;
+    }
+`;
+
 export const ButtonBar = styled.div`
     text-align: right;
     padding-bottom: 14px;

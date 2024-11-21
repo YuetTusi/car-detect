@@ -4,7 +4,6 @@ import { JSX } from 'react';
 import { BasebandInfo } from '@renderer/schema/baseband-info';
 import { RFData } from '@renderer/schema/rf-data';
 import { Location } from '@renderer/schema/location';
-import { ActionType } from './prop';
 
 /**
  * 板卡设备表列头
@@ -17,7 +16,7 @@ export const getBandColumns = (data: BasebandInfo[]): any[] => {
         allfields = union(allfields, Object.keys(item));
     });
 
-    return allfields.map((item, index) => {
+    return allfields.map((item) => {
         let title = '';
 
         for (let i = 0; i < data.length; i++) {
@@ -35,9 +34,9 @@ export const getBandColumns = (data: BasebandInfo[]): any[] => {
             dataIndex: item,
             textWrap: 'word-break',
             // ellipsis: true,
-            width: title.includes('时间') ? 150 : undefined,
-            align: title.includes('时间') ? 'center' : 'left',
-            render: title.includes('时间') ? (value: string): JSX.Element => {
+            width: title?.includes('时间') ? 150 : undefined,
+            align: title?.includes('时间') ? 'center' : 'left',
+            render: title?.includes('时间') ? (value: string): JSX.Element => {
                 return <span>{dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss')}</span>;
             } : undefined
         };
@@ -75,9 +74,9 @@ export const getRfColumns = (data: RFData[]): any[] => {
                 dataIndex: item,
                 textWrap: 'word-break',
                 // ellipsis: true,
-                width: title.includes('时间') ? 150 : undefined,
-                align: title.includes('时间') ? 'center' : 'left',
-                render: title.includes('时间') ? (value: string): JSX.Element => {
+                width: title?.includes('时间') ? 150 : undefined,
+                align: title?.includes('时间') ? 'center' : 'left',
+                render: title?.includes('时间') ? (value: string): JSX.Element => {
                     return <span>{dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss')}</span>;
                 } : undefined
             };
@@ -97,7 +96,7 @@ export const getLocationColumns = (data: Location[]): any[] => {
         allfields = union(allfields, Object.keys(item));
     });
 
-    return allfields.map((item, index) => {
+    return allfields.map((item) => {
         let title = '';
 
         for (let i = 0; i < data.length; i++) {
@@ -115,9 +114,9 @@ export const getLocationColumns = (data: Location[]): any[] => {
             dataIndex: item,
             textWrap: 'word-break',
             // ellipsis: true,
-            width: title.includes('时间') ? 150 : undefined,
-            align: title.includes('时间') ? 'center' : 'left',
-            render: title.includes('时间') ? (value: string): JSX.Element => {
+            width: title?.includes('时间') ? 150 : undefined,
+            align: title?.includes('时间') ? 'center' : 'left',
+            render: title?.includes('时间') ? (value: string): JSX.Element => {
                 return <span>{dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss')}</span>;
             } : undefined
         };

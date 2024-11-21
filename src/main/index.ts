@@ -6,6 +6,7 @@ import log from 'electron-log/main';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { bindDbHandle } from './db-handle';
+import { disable4G2G } from './clean';
 
 const cwd = process.cwd();
 let serviceHandle: ChildProcessWithoutNullStreams | null = null;
@@ -34,7 +35,7 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     serviceHandle = spawn('E:\\release\\X-PrecisionLocator.exe', [], {
-      cwd: undefined,
+      cwd: 'E:\\release',
       windowsHide: false,
     });
     serviceHandle.on('error', (error) => {
@@ -98,6 +99,7 @@ app.whenReady().then(() => {
         serviceHandle.kill();
         serviceHandle = null;
       }
+      disable4G2G();
       clearInterval(timer);
       app.exit(0);
     }
@@ -127,11 +129,11 @@ app.whenReady().then(() => {
   createWindow();
 
   timer = setInterval(() => {
-    const date = new Date();
     if (mainWindow !== null) {
-      if (date.getSeconds() % 6 === 0) {
-        mainWindow.webContents.send('polling');
-      }
+      mainWindow.webContents.send('polling');
+      // if (date.getSeconds() % 6 === 0) {
+      //   mainWindow.webContents.send('polling');
+      // }
     }
   }, 1000);
 
@@ -151,6 +153,7 @@ app.on('window-all-closed', () => {
       serviceHandle.kill();
       serviceHandle = null;
     }
+    disable4G2G();
     clearInterval(timer);
     app.quit();
   }

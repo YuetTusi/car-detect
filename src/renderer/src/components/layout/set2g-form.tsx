@@ -63,6 +63,11 @@ const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
                                 <InputNumber style={{ width: '100%' }} />
                             </Item>
                         </Col>
+                        {/* <Col span={12}>
+                            <Item label="发射功率" name="power">
+                                <InputNumber style={{ width: '100%' }} />
+                            </Item>
+                        </Col> */}
                     </Row>
                 </div>
             </fieldset>
@@ -101,6 +106,11 @@ const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
                                 <InputNumber style={{ width: '100%' }} />
                             </Item>
                         </Col>
+                        {/* <Col span={12}>
+                            <Item label="发射功率" name="power">
+                                <InputNumber style={{ width: '100%' }} />
+                            </Item>
+                        </Col> */}
                     </Row>
                 </div>
             </fieldset>

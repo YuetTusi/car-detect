@@ -52,6 +52,10 @@ export interface Set4gFormValue {
    * TAC
    */
   cuTac: number;
+  /**
+   * 发射功率
+   */
+  power: number;
 }
 
 export interface Set2gFormValue {
@@ -95,4 +99,8 @@ export interface Set2gFormValue {
    * TAC
    */
   cuTac: number;
+  /**
+   * 发射功率
+   */
+  power: number;
 }

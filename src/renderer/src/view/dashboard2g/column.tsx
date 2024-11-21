@@ -15,7 +15,7 @@ export const getBandColumns = (data: BasebandInfo[]): any[] => {
         allfields = union(allfields, Object.keys(item));
     });
 
-    return allfields.map((item, index) => {
+    return allfields.map((item) => {
         let title = '';
 
         for (let i = 0; i < data.length; i++) {
@@ -53,7 +53,7 @@ export const getRfColumns = (data: RFData[]): any[] => {
         allfields = union(allfields, Object.keys(item));
     });
 
-    const columns: any[] = allfields.map((item, index) => {
+    const columns: any[] = allfields.map((item) => {
         let title = '';
 
         for (let i = 0; i < data.length; i++) {
@@ -93,7 +93,7 @@ export const getLocationColumns = (data: Location[]): any[] => {
         allfields = union(allfields, Object.keys(item));
     });
 
-    return allfields.map((item, index) => {
+    return allfields.map((item) => {
         let title = '';
 
         for (let i = 0; i < data.length; i++) {
