@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { access } from 'fs/promises';
-import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+// import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import log from 'electron-log/main';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
@@ -9,7 +9,7 @@ import { bindDbHandle } from './db-handle';
 import { disable4G2G } from './clean';
 
 const cwd = process.cwd();
-let serviceHandle: ChildProcessWithoutNullStreams | null = null;
+// let serviceHandle: ChildProcessWithoutNullStreams | null = null;
 // 设置日志文件路径
 log.initialize();
 log.transports.file.resolvePathFn = (): string => join(cwd, 'logs/app.log');
@@ -34,17 +34,17 @@ function createWindow(): void {
   });
 
   mainWindow.on('ready-to-show', () => {
-    serviceHandle = spawn('E:\\release\\X-PrecisionLocator.exe', [], {
-      cwd: 'E:\\release',
-      windowsHide: false,
-    });
-    serviceHandle.on('error', (error) => {
-      log.error(`服务出错: ${error.message}`);
-      serviceHandle?.kill();
-      if (mainWindow !== null) {
-        mainWindow.webContents.send('start-service', false);
-      }
-    });
+    // serviceHandle = spawn('E:\\release\\X-PrecisionLocator.exe', [], {
+    //   cwd: 'E:\\release',
+    //   windowsHide: false,
+    // });
+    // serviceHandle.on('error', (error) => {
+    //   log.error(`服务出错: ${error.message}`);
+    //   serviceHandle?.kill();
+    //   if (mainWindow !== null) {
+    //     mainWindow.webContents.send('start-service', false);
+    //   }
+    // });
     mainWindow?.show();
   });
 
@@ -95,10 +95,10 @@ app.whenReady().then(() => {
         mainWindow.destroy();
         mainWindow = null;
       }
-      if (serviceHandle !== null) {
-        serviceHandle.kill();
-        serviceHandle = null;
-      }
+      // if (serviceHandle !== null) {
+      //   serviceHandle.kill();
+      //   serviceHandle = null;
+      // }
       disable4G2G();
       clearInterval(timer);
       app.exit(0);
@@ -116,10 +116,10 @@ app.whenReady().then(() => {
         mainWindow.destroy();
         mainWindow = null;
       }
-      if (serviceHandle !== null) {
-        serviceHandle.kill();
-        serviceHandle = null;
-      }
+      // if (serviceHandle !== null) {
+      //   serviceHandle.kill();
+      //   serviceHandle = null;
+      // }
       app.exit(0);
     }
   });
@@ -149,10 +149,10 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    if (serviceHandle !== null) {
-      serviceHandle.kill();
-      serviceHandle = null;
-    }
+    // if (serviceHandle !== null) {
+    //   serviceHandle.kill();
+    //   serviceHandle = null;
+    // }
     disable4G2G();
     clearInterval(timer);
     app.quit();

@@ -1,5 +1,5 @@
 import mapValues from 'lodash/mapValues';
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import {
     CheckCircleOutlined, LoadingOutlined
 } from '@ant-design/icons';
@@ -21,6 +21,22 @@ const Set4gForm: FC<Set4gFormProp> = ({ formRef }) => {
     const { setBaseBand4gData } = useBaseBand4g();
     const { setRfCapture4gData } = useRfCapture4g();
     const { setLocation4gData } = useLocation4g();
+
+    useEffect(() => {
+        const { setFieldsValue } = formRef;
+        setFieldsValue({
+            "cmDlarfcn": 38950,
+            "cmUlarfcn": 38950,
+            "cmPci": 501,
+            "cmCellId": 111111,
+            "cmTac": 11111,
+            "cuDlarfcn": 1650,
+            "cuUlarfcn": 19650,
+            "cuPci": 500,
+            "cuCellId": 222222,
+            "cuTac": 22222,
+        });
+    }, []);
 
     return <Form
         form={formRef}

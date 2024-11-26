@@ -1,5 +1,5 @@
 import mapValues from 'lodash/mapValues';
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     CheckCircleOutlined, LoadingOutlined
@@ -23,6 +23,22 @@ const Set2gForm: FC<Set2gFormProp> = ({ formRef }) => {
     const { setRfCapture2gData } = useRfCapture2g();
     const { setBaseBand2gData } = useBaseBand2g();
     const { setLocation2gData } = useLocation2g();
+
+    useEffect(() => {
+        const { setFieldsValue } = formRef;
+        setFieldsValue({
+            "cmDlarfcn": 38950,
+            "cmUlarfcn": 38950,
+            "cmPci": 501,
+            "cmCellId": 111111,
+            "cmTac": 11111,
+            "cuDlarfcn": 1650,
+            "cuUlarfcn": 19650,
+            "cuPci": 500,
+            "cuCellId": 222222,
+            "cuTac": 22222,
+        });
+    }, []);
 
     return <Form
         form={formRef}

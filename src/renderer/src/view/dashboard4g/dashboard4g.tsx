@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce';
 import { FC, MouseEvent } from 'react';
 import { PlayCircleOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { App, Button } from 'antd';
-import { useIsSet } from '@renderer/hook';
+// import { useIsSet } from '@renderer/hook';
 import { request } from '@renderer/util/http';
 import { Panel } from '@renderer/components/panel';
 import {
@@ -19,7 +19,7 @@ import { Dashboard4gProp } from './prop';
 const Dashboard4g: FC<Dashboard4gProp> = () => {
 
     const { message } = App.useApp();
-    const isSet = useIsSet();
+    // const isSet = useIsSet();
     const { setBaseBand4gData } = useBaseBand4g();
     const { setRfCapture4gData } = useRfCapture4g();
     const { setLocation4gData } = useLocation4g();
@@ -30,7 +30,19 @@ const Dashboard4g: FC<Dashboard4gProp> = () => {
     const enable4gClick = debounce(async (event: MouseEvent): Promise<void> => {
         event.preventDefault();
         try {
-            const res = await request('/api/v1/enable4GRF', {}, 'POST');
+            const res = await request('/api/v1/enable4GRF', {
+                "cmDlarfcn": "38950",
+                "cmUlarfcn": "38950",
+                "cmPci": "501",
+                "cmCellId": "111111",
+                "cmTac": "11111",
+                "cuDlarfcn": "1650",
+                "cuUlarfcn": "19650",
+                "cuPci": "500",
+                "cuCellId": "222222",
+                "cuTac": "22222",
+                "power": "40"
+            }, 'POST');
             if (res.success) {
                 setBaseBand4gData([]);
                 setLocation4gData([]);
@@ -66,7 +78,7 @@ const Dashboard4g: FC<Dashboard4gProp> = () => {
 
     return <div style={{ margin: '5px' }}>
         <Panel title="4G">
-            <SwitchBar style={{ display: isSet ? 'block' : 'none' }}>
+            <SwitchBar>
                 <Button onClick={enable4gClick} type="primary">
                     <PlayCircleOutlined />
                     <span>开启</span>

@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce';
 import { FC, MouseEvent } from 'react';
 import { App, Button } from 'antd';
 import { PlayCircleOutlined, PoweroffOutlined } from '@ant-design/icons';
-import { useIsSet } from '@renderer/hook';
+// import { useIsSet } from '@renderer/hook';
 import { request } from '@renderer/util/http';
 import { Panel } from '@renderer/components/panel';
 import { useBaseBand2g, useLocation2g, useRfCapture2g } from '@renderer/model';
@@ -15,7 +15,7 @@ import { Dashboard2gProp } from './prop';
 const Dashboard2g: FC<Dashboard2gProp> = () => {
 
     const { message } = App.useApp();
-    const isSet = useIsSet();
+    // const isSet = useIsSet();
     const { setRfCapture2gData } = useRfCapture2g();
     const { setBaseBand2gData } = useBaseBand2g();
     const { setLocation2gData } = useLocation2g();
@@ -26,7 +26,11 @@ const Dashboard2g: FC<Dashboard2gProp> = () => {
     const enable2gClick = debounce(async (event: MouseEvent): Promise<void> => {
         event.preventDefault();
         try {
-            const res = await request('/api/v1/enable2GRF', {}, 'POST');
+            const res = await request('/api/v1/enable2GRF', {
+                "cmArfcn": "50",
+                "cuArfcn": "120",
+                "blackList": ""
+            }, 'POST');
             if (res.success) {
                 setBaseBand2gData([]);
                 setLocation2gData([]);
@@ -62,7 +66,7 @@ const Dashboard2g: FC<Dashboard2gProp> = () => {
 
     return <div style={{ margin: '5px' }}>
         <Panel title="2G">
-            <SwitchBar style={{ display: isSet ? 'block' : 'none' }}>
+            <SwitchBar>
                 <Button onClick={enable2gClick} type="primary">
                     <PlayCircleOutlined />
                     <span>开启</span>
